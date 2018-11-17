@@ -13,5 +13,17 @@ namespace WLED
         {
             InitializeComponent();
         }
+
+        private async void Start_Clicked(object sender, System.EventArgs e)
+        {
+            var page = new DeviceListViewPage();
+            await Navigation.PushModalAsync(page);
+        }
+
+        /*private async Task openDeviceListView()
+        {
+            var page = new DeviceListViewPage();
+            await Navigation.PushModalAsync(page);
+        }*/
     }
 }

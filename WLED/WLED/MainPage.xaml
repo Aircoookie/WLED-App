@@ -9,6 +9,7 @@
         <Label Text="Welcome to WLED!" 
            HorizontalOptions="Center"
            VerticalOptions="CenterAndExpand" />
+        <Button x:Name="startButton" Text="Get started!"  Clicked="Start_Clicked" />
     </StackLayout>
 
 </ContentPage>
