@@ -30,6 +30,11 @@ namespace WLED
 			DeviceListView.ItemsSource = Items;
         }
 
+        async void Handle_MenuItem_Activated(object sender, ItemTappedEventArgs e)
+        {
+            await DisplayAlert("Item Tapped", "Menu was tapped.", "OK");
+        }
+
         async void Handle_ItemTapped(object sender, ItemTappedEventArgs e)
         {
             if (e.Item == null)

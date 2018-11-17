@@ -1,8 +1,27 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-             x:Class="WLED.DeviceListViewPage">
-  <ListView x:Name="DeviceListView"
+             x:Class="WLED.DeviceListViewPage"
+               Title="WLED">
+    <!--<NavigationPage.TitleView>
+        <StackLayout Orientation="Horizontal" Spacing="10">
+            <Image Source="iconXamagon.png">
+                <Image.GestureRecognizers>
+                    <Image.TapGestureRecognizer
+                        Tapped="HandleTapped" />
+                </Image.GestureRecognizers>
+            </Image>
+            <Label Text="0.1.0" FontSize="16" TextColor="Black" VerticalTextAlignment="Center" />
+            <ToolbarItem Name="MenuItemAdd" Order="Primary" Icon="Microsoft.png" Text="Add" Priority="0" Activated="MenuItemAdd_Activated" />
+            <ToolbarItem Name="MenuItemMore" Order="Primary" Icon="Xamarin.png" Text="More" Priority="1" Activated="MenuItemMore_Activated" />
+        </StackLayout>
+    </NavigationPage.TitleView>-->
+    <ContentPage.ToolbarItems>
+        <ToolbarItem Name="MenuItemAdd" Order="Primary" Icon="Microsoft.png" Text="Add" Priority="0" Activated="Handle_MenuItem_Activated" />
+        <ToolbarItem Name="MenuItemMore" Order="Primary" Icon="Xamarin.png" Text="More" Priority="1" Activated="Handle_MenuItem_Activated" />
+    </ContentPage.ToolbarItems>
+    
+    <ListView x:Name="DeviceListView"
             ItemsSource="{Binding Items}"
             ItemTapped="Handle_ItemTapped"
             CachingStrategy="RecycleElement">
