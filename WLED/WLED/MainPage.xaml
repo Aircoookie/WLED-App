@@ -6,7 +6,7 @@
 
     <StackLayout>
         <!-- Place new controls here -->
-        <Label Text="Welcome to Xamarin.Forms!" 
+        <Label Text="Welcome to WLED!" 
            HorizontalOptions="Center"
            VerticalOptions="CenterAndExpand" />
     </StackLayout>
