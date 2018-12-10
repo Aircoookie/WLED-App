@@ -12,19 +12,16 @@ namespace WLED
     [XamlCompilation(XamlCompilationOptions.Compile)]
     public partial class DeviceListViewPage : ContentPage
     {
-        public ObservableCollection<string> Items { get; set; }
+        public ObservableCollection<WLEDDevice> Items { get; set; }
 
         public DeviceListViewPage()
         {
             InitializeComponent();
 
-            Items = new ObservableCollection<string>
+            Items = new ObservableCollection<WLEDDevice>
             {
-                "Item 1",
-                "Item 2",
-                "Item 3",
-                "Item 4",
-                "Item 5"
+                new WLEDDevice("10.10.1.11","Table", 1812052),
+                new WLEDDevice("10.10.1.12","Clock", 0)
             };
 			
 			DeviceListView.ItemsSource = Items;
@@ -39,9 +36,15 @@ namespace WLED
         {
             if (e.Item == null)
                 return;
-            string tpdTest = e.Item as string;
+            WLEDDevice tpdTest = e.Item as WLEDDevice;
 
-            await DisplayAlert("Item Tapped", tpdTest + " was tapped.", "OK");
+            string url = "http://";
+            url += tpdTest.NetworkAddress;
+
+            //Device.OpenUri(new Uri(url));
+            //await DisplayAlert("Item Tapped", tpdTest.Name + " was tapped.", "OK");
+            var page = new DeviceControlPage(url);
+            await Navigation.PushModalAsync(page);
 
             //Deselect Item
             ((ListView)sender).SelectedItem = null;

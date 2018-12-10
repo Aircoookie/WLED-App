@@ -17,10 +17,16 @@
     <Compile Update="DeviceListViewPage.xaml.cs">
       <DependentUpon>DeviceListViewPage.xaml</DependentUpon>
     </Compile>
+    <Compile Update="DeviceControlPage.xaml.cs">
+      <DependentUpon>DeviceControlPage.xaml</DependentUpon>
+    </Compile>
   </ItemGroup>
 
   <ItemGroup>
     <EmbeddedResource Update="DeviceListViewPage.xaml">
+      <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
+    </EmbeddedResource>
+    <EmbeddedResource Update="DeviceControlPage.xaml">
       <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
     </EmbeddedResource>
   </ItemGroup>

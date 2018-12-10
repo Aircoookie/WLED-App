@@ -19,11 +19,5 @@ namespace WLED
             var page = new DeviceListViewPage();
             await Navigation.PushModalAsync(page);
         }
-
-        /*private async Task openDeviceListView()
-        {
-            var page = new DeviceListViewPage();
-            await Navigation.PushModalAsync(page);
-        }*/
     }
 }
