@@ -2,7 +2,9 @@
 <ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="WLED.DeviceListViewPage"
-               Title="WLED">
+               Title="WLED"
+               BackgroundColor="#222"
+             >
     <!--<NavigationPage.TitleView>
         <StackLayout Orientation="Horizontal" Spacing="10">
             <Image Source="iconXamagon.png">
@@ -20,25 +22,40 @@
         <ToolbarItem Name="MenuItemAdd" Order="Primary" Icon="Microsoft.png" Text="Add" Priority="0" Activated="Handle_MenuItem_Activated" />
         <ToolbarItem Name="MenuItemMore" Order="Primary" Icon="Xamarin.png" Text="More" Priority="1" Activated="Handle_MenuItem_Activated" />
     </ContentPage.ToolbarItems>
-    
+
     <ListView x:Name="DeviceListView"
             ItemsSource="{Binding Items}"
             ItemTapped="Handle_ItemTapped"
+            HasUnevenRows="True"
             CachingStrategy="RecycleElement">
-            
-    
-    <ListView.ItemTemplate>
-      <DataTemplate>
-        <ViewCell>
-          <StackLayout>
-            <Label Text="{Binding Name}" 
-                   Style="{DynamicResource ListItemTextStyle}" />
-            <Label Text="{Binding NetworkAddress}" 
-                   Style="{DynamicResource ListItemDetailTextStyle}"/>
-          </StackLayout>
-        </ViewCell>
-      </DataTemplate>
-    </ListView.ItemTemplate>
-    
-  </ListView>
+
+
+        <ListView.ItemTemplate>
+            <DataTemplate>
+                <ViewCell>
+                    <Grid Padding ="5">
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="30" />
+                            <RowDefinition Height="38" />
+                        </Grid.RowDefinitions>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*" />
+                            <ColumnDefinition Width="75" />
+                        </Grid.ColumnDefinitions>
+                        <Label Text="{Binding Name}" 
+                               Font="Bold,25" TextColor="white"
+                               Grid.Row="0" Grid.Column="0" />
+                        <!--Style="{DynamicResource ListItemTextStyle}"-->
+                        <Label Text="{Binding NetworkAddress}" 
+                               Font="20" TextColor="white"
+                               Grid.Row="1" Grid.Column="0" />
+                        <Button BorderRadius="50" BackgroundColor="#222" BorderColor="White" BorderWidth="4"
+                                Grid.Row="0" Grid.Column="1" Grid.RowSpan="2"/>
+                        <Image Source="power.png" Scale ="0.8" Grid.Row="0" Grid.Column="1" Grid.RowSpan="2" InputTransparent="true"/>
+                    </Grid>
+                </ViewCell>
+            </DataTemplate>
+        </ListView.ItemTemplate>
+
+    </ListView>
 </ContentPage>
