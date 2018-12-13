@@ -132,6 +132,7 @@
     <Content Include="Assets\Wide310x150Logo.scale-400.png" />
     <Content Include="power.png" />
     <Content Include="Properties\Default.rd.xml" />
+    <Content Include="wled_logo.png" />
   </ItemGroup>
   <ItemGroup>
     <ApplicationDefinition Include="App.xaml">

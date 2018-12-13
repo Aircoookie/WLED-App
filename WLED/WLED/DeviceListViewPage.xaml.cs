@@ -32,6 +32,13 @@ namespace WLED
             await DisplayAlert("Item Tapped", "Menu was tapped.", "OK");
         }
 
+        async void Handle_PowerButton_Clicked(object sender, ItemTappedEventArgs e)
+        {
+            Button s = sender as Button;
+            WLEDDevice wd = s.Parent.BindingContext as WLEDDevice;
+            await DisplayAlert("Item Tapped", wd.Name, "OK");
+        }
+
         async void Handle_ItemTapped(object sender, ItemTappedEventArgs e)
         {
             if (e.Item == null)
@@ -42,7 +49,6 @@ namespace WLED
             url += tpdTest.NetworkAddress;
 
             //Device.OpenUri(new Uri(url));
-            //await DisplayAlert("Item Tapped", tpdTest.Name + " was tapped.", "OK");
             var page = new DeviceControlPage(url);
             await Navigation.PushModalAsync(page);
 

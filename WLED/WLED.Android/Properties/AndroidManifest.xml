@@ -2,5 +2,5 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android" android:versionCode="1" android:versionName="1.0" package="com.aircoookie.WLED" android:installLocation="auto">
 	<uses-sdk android:minSdkVersion="21" android:targetSdkVersion="27" />
 	<uses-permission android:name="android.permission.INTERNET" />
-	<application android:label="WLED" android:icon="@drawable/LogoACh"></application>
+	<application android:label="WLED" android:icon="@drawable/logoach"></application>
 </manifest>

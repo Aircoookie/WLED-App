@@ -11,7 +11,7 @@ namespace WLED
         {
             InitializeComponent();
 
-            MainPage = new MainPage();
+            MainPage = new NavigationPage(new DeviceListViewPage());
         }
 
         protected override void OnStart()
