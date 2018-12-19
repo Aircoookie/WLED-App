@@ -4,6 +4,23 @@
              x:Class="WLED.DeviceControlPage">
     <ContentPage.Content>
         <StackLayout>
+            <!-- TODO try to inherit parts of nav bar-->
+            <Grid BackgroundColor="#333">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="45" />
+                </Grid.RowDefinitions>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="65" />
+                    <ColumnDefinition Width="*"  />
+                    <ColumnDefinition Width="65" />
+                </Grid.ColumnDefinitions>
+                <Image Source="icon_back.png" Scale="0.8" Aspect="AspectFit" HorizontalOptions="Center" VerticalOptions="FillAndExpand"
+                   Grid.Row="0" Grid.Column="0"/>
+                <Image Source="wled_logo.png" Scale="0.8" Aspect="AspectFit" HorizontalOptions="Center" VerticalOptions="FillAndExpand"
+                   Grid.Row="0" Grid.Column="1"/>
+                <Image Source="icon_delete.png" Scale="0.8" Aspect="AspectFit" HorizontalOptions="Center" VerticalOptions="FillAndExpand"
+                   Grid.Row="0" Grid.Column="2"/>
+            </Grid>
             <WebView x:Name="UIBrowser" WidthRequest="1000" HeightRequest="1000"/>
         </StackLayout>
     </ContentPage.Content>

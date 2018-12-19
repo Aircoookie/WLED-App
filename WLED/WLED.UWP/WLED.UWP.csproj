@@ -130,6 +130,12 @@
     <Content Include="Assets\Wide310x150Logo.scale-100.png" />
     <Content Include="Assets\Wide310x150Logo.scale-200.png" />
     <Content Include="Assets\Wide310x150Logo.scale-400.png" />
+    <Content Include="icon_add.png" />
+    <Content Include="icon_back.png" />
+    <Content Include="icon_delete.png" />
+    <Content Include="icon_hide.png" />
+    <Content Include="icon_power_bright.png" />
+    <Content Include="icon_power_dark.png" />
     <Content Include="power.png" />
     <Content Include="Properties\Default.rd.xml" />
     <Content Include="wled_logo.png" />
@@ -153,6 +159,9 @@
       <Project>{3D722692-23A5-420B-8E55-60229F5DE386}</Project>
       <Name>WLED</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Assets\PixelFont.ttf" />
   </ItemGroup>
   <PropertyGroup Condition=" '$(VisualStudioVersion)' == '' or '$(VisualStudioVersion)' &lt; '14.0' ">
     <VisualStudioVersion>14.0</VisualStudioVersion>

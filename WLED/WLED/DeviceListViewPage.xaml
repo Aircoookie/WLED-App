@@ -4,52 +4,60 @@
              x:Class="WLED.DeviceListViewPage"
                BackgroundColor="#222"
              >
-    <NavigationPage.TitleView>
-        <StackLayout Orientation="Horizontal" Spacing="10" BackgroundColor="#333">
-            <Image Source="wled_logo.png" Aspect="AspectFill"/>
+    <StackLayout>
+        <Grid BackgroundColor="#333">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="45" />
+            </Grid.RowDefinitions>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="65" />
+                <ColumnDefinition Width="*"  />
+                <ColumnDefinition Width="65" />
+            </Grid.ColumnDefinitions>
+            <Image Source="wled_logo.png" Scale="0.8" Aspect="AspectFit" HorizontalOptions="Center" VerticalOptions="FillAndExpand"
+                   Grid.Row="0" Grid.Column="1"/>
+            <Image Source="icon_add.png" Scale="0.8" Aspect="AspectFit" HorizontalOptions="Center" VerticalOptions="FillAndExpand"
+                   Grid.Row="0" Grid.Column="2"/>
+        </Grid>
 
 
-            <Label Text="0.1.0" FontSize="16" TextColor="Black" VerticalTextAlignment="Center" />
-        </StackLayout>
-    </NavigationPage.TitleView>
-    
-
-    <ListView x:Name="DeviceListView"
-            ItemsSource="{Binding Items}"
-            ItemTapped="Handle_ItemTapped"
-            HasUnevenRows="True"
-            CachingStrategy="RecycleElement">
+        <ListView x:Name="DeviceListView"
+                ItemsSource="{Binding Items}"
+                ItemTapped="Handle_ItemTapped"
+                HasUnevenRows="True"
+                CachingStrategy="RecycleElement">
 
 
-        <ListView.ItemTemplate>
-            <DataTemplate>
-                <ViewCell>
-                    <Grid Padding ="5">
-                        <Grid.RowDefinitions>
-                            <RowDefinition Height="30" />
-                            <RowDefinition Height="38" />
-                        </Grid.RowDefinitions>
-                        <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="*" />
-                            <ColumnDefinition Width="75" />
-                        </Grid.ColumnDefinitions>
-                        <Label Text="{Binding Name}" 
-                               Font="Bold,25" TextColor="white"
-                               Grid.Row="0" Grid.Column="0" />
-                        <!--Style="{DynamicResource ListItemTextStyle}"-->
-                        <Label Text="{Binding NetworkAddress}" 
-                               Font="20" TextColor="white"
-                               Grid.Row="1" Grid.Column="0" />
-                        <Button Clicked="Handle_PowerButton_Clicked"
-                                BorderRadius="50" BackgroundColor="#222" BorderColor="White" BorderWidth="4"
-                                Grid.Row="0" Grid.Column="1" Grid.RowSpan="2"/>
-                        <Image Source="power.png" Scale ="0.8" Grid.Row="0" Grid.Column="1" Grid.RowSpan="2" InputTransparent="true"/>
-                    </Grid>
-                </ViewCell>
-            </DataTemplate>
-        </ListView.ItemTemplate>
+            <ListView.ItemTemplate>
+                <DataTemplate>
+                    <ViewCell>
+                        <Grid Padding ="6">
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="35" />
+                                <RowDefinition Height="25" />
+                            </Grid.RowDefinitions>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*" />
+                                <ColumnDefinition Width="65" />
+                            </Grid.ColumnDefinitions>
+                            <Label Text="{Binding Name}" 
+                                   Font="25" FontFamily="{StaticResource NormalFont}" TextColor="white"
+                                   Grid.Row="0" Grid.Column="0" />
+                            <!--Style="{DynamicResource ListItemTextStyle}"-->
+                            <Label Text="{Binding NetworkAddress}" 
+                                   Font="18" FontFamily="{StaticResource NormalFont}" TextColor="white"
+                                   Grid.Row="1" Grid.Column="0" />
+                            <!--<Button Clicked="Handle_PowerButton_Clicked"
+                                    BorderRadius="50" BackgroundColor="#222" BorderColor="White" BorderWidth="4"
+                                    Grid.Row="0" Grid.Column="1" Grid.RowSpan="2"/>-->
+                            <Image Source="icon_power_bright.png" Scale ="0.8" Grid.Row="0" Grid.Column="1" Grid.RowSpan="2" InputTransparent="true"/>
+                        </Grid>
+                    </ViewCell>
+                </DataTemplate>
+            </ListView.ItemTemplate>
 
-    </ListView>
+        </ListView>
+    </StackLayout>
 
     <!--<ContentPage.ToolbarItems>
         <ToolbarItem Name="MenuItemAdd" Order="Primary" Icon="wled_logo.png" Text="Add" Priority="0" Activated="Handle_MenuItem_Activated" />

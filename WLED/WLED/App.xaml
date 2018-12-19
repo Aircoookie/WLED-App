@@ -3,6 +3,12 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="WLED.App">
     <Application.Resources>
-
+        <ResourceDictionary>
+            <OnPlatform x:TypeArguments="x:String" x:Key="NormalFont">
+                <On Platform="Android" Value="PixelFont.ttf" />
+                <On Platform="UWP" Value="/Assets/PixelFont.ttf" />
+                <On Platform="iOS" Value="OpenSans-Regular" />
+            </OnPlatform>
+        </ResourceDictionary>
     </Application.Resources>
 </Application>

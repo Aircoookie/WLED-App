@@ -21,7 +21,17 @@ namespace WLED
             Items = new ObservableCollection<WLEDDevice>
             {
                 new WLEDDevice("10.10.1.11","Table", 1812052),
-                new WLEDDevice("10.10.1.12","Clock", 0)
+                new WLEDDevice("10.10.1.12","Clock", 0),
+                new WLEDDevice("google.com","Sample Device", 0),
+                new WLEDDevice("google.com","Sample Device", 0),
+                new WLEDDevice("google.com","Sample Device", 0),
+                new WLEDDevice("google.com","Sample Device", 0),
+                new WLEDDevice("google.com","Sample Device", 0),
+                new WLEDDevice("google.com","Sample Device", 0),
+                new WLEDDevice("google.com","Sample Device", 0),
+                new WLEDDevice("google.com","Sample Device", 0),
+                new WLEDDevice("google.com","Sample Device", 0),
+                new WLEDDevice("google.com","Sample Device", 0)
             };
 			
 			DeviceListView.ItemsSource = Items;
