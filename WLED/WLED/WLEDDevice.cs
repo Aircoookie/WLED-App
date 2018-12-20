@@ -18,5 +18,11 @@ namespace WLED
             Name = name;
             Version = v;
         }
+
+        public bool IsGreaterThan(WLEDDevice comp)
+        {
+            if (comp == null) return false;
+            return (Name.CompareTo(comp.Name) > 0);
+        }
     }
 }

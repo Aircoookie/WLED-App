@@ -45,7 +45,7 @@ namespace WLED
                 handler(this, e);
             } else
             {
-                Navigation.PopModalAsync();
+                Navigation.PopModalAsync(false);
             }
         }
 

@@ -5,7 +5,7 @@
              x:Class="WLED.DeviceListViewPage"
              BackgroundColor="#222"
              >
-    <ContentView.Resources>
+    <ContentPage.Resources>
         <ResourceDictionary>
             <Style x:Key="LabelStyle" TargetType="Label">
                 <Setter Property="TextColor" Value="White" />
@@ -13,7 +13,7 @@
                 <Setter Property="VerticalOptions" Value="CenterAndExpand" />
             </Style>
         </ResourceDictionary>
-    </ContentView.Resources>
+    </ContentPage.Resources>
     
     <StackLayout>
         <wled:MenuBar x:Name="topMenuBar"/>
@@ -21,14 +21,12 @@
         <Label x:Name="welcomeLabel"
                Text="Welcome!"
                Font="Bold, 25"
-               IsVisible="{Binding ListIsEmpty}"
                Style="{StaticResource LabelStyle}" />
 
         <Label x:Name="instructionLabel"
                Font="18"
                Text="Please use the &quot;+&quot; button to add your WLED lights!"
                HorizontalTextAlignment="Center"
-               IsVisible="{Binding ListIsEmpty}"
                Style="{StaticResource LabelStyle}" />
 
         <ListView x:Name="DeviceListView"

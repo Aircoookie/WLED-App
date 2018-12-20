@@ -13,7 +13,6 @@ namespace WLED
     public partial class DeviceListViewPage : ContentPage
     {
         public ObservableCollection<WLEDDevice> Items { get; set; }
-        bool listIsEmpty;
 
         public DeviceListViewPage()
         {
@@ -23,23 +22,13 @@ namespace WLED
             {
                 /*new WLEDDevice("10.10.1.11","Table", 1812052),
                 new WLEDDevice("10.10.1.12","Clock", 0),
-                new WLEDDevice("google.com","Sample Device", 0),
-                new WLEDDevice("google.com","Sample Device", 0),
-                new WLEDDevice("google.com","Sample Device", 0),
-                new WLEDDevice("google.com","Sample Device", 0),
-                new WLEDDevice("google.com","Sample Device", 0),
-                new WLEDDevice("google.com","Sample Device", 0),
-                new WLEDDevice("google.com","Sample Device", 0),
-                new WLEDDevice("google.com","Sample Device", 0),
-                new WLEDDevice("google.com","Sample Device", 0),
                 new WLEDDevice("google.com","Sample Device", 0)*/
             };
 			
 			DeviceListView.ItemsSource = Items;
 
-            listIsEmpty = (Items.Count == 0);
+            UpdateLabelVisibility();
 
-            topMenuBar.SetButtonIcon(ButtonLocation.Left, "");
             topMenuBar.SetButtonIcon(ButtonLocation.Right, "icon_add.png");
             topMenuBar.RightButtonTapped += On_AddButton_Tapped;
         }
@@ -47,7 +36,21 @@ namespace WLED
         async void On_AddButton_Tapped(object sender, EventArgs e)
         {
             var page = new DeviceAddPage(this);
+            page.DeviceCreated += On_Device_Created;
             await Navigation.PushModalAsync(page, false);
+        }
+
+        void On_Device_Created(object sender, DeviceCreatedEventArgs e)
+        {
+            if (e.CreatedDevice != null)
+            {
+                //Items.Add(e.CreatedDevice); TODO re-sort if item name changed
+                int index = 0;
+                while (index < Items.Count && e.CreatedDevice.IsGreaterThan(Items.ElementAt(index))) index++;
+                Items.Insert(index, e.CreatedDevice);
+
+                UpdateLabelVisibility();
+            }
         }
 
         async void On_PowerButton_Tapped(object sender, ItemTappedEventArgs e)
@@ -59,18 +62,38 @@ namespace WLED
 
         async void On_Item_Tapped(object sender, ItemTappedEventArgs e)
         {
-            if (e.Item == null)
-                return;
+            if (e.Item == null) return;
             WLEDDevice targetDevice = e.Item as WLEDDevice;
 
-            string url = "http://";
-            url += targetDevice.NetworkAddress;
+            string url = targetDevice.NetworkAddress;
+            if (url == null) return;
 
-            var page = new DeviceControlPage(url);
-            await Navigation.PushModalAsync(page, false);
+            if (!url.StartsWith("http://")) url = "http://" +url;
+
+            if (url.Length > 7)
+            {
+                var page = new DeviceControlPage(url);
+                await Navigation.PushModalAsync(page, false);
+            }
 
             //Deselect Item
             ((ListView)sender).SelectedItem = null;
+        }
+
+        void UpdateLabelVisibility()
+        {
+            bool listIsEmpty = (Items.Count == 0);
+
+            welcomeLabel.IsVisible = listIsEmpty;
+            instructionLabel.IsVisible = listIsEmpty;
+
+            if (listIsEmpty)
+            {
+                topMenuBar.SetButtonIcon(ButtonLocation.Left, null);
+            } else
+            {
+                topMenuBar.SetButtonIcon(ButtonLocation.Left, "icon_modify.png");
+            }
         }
     }
 }

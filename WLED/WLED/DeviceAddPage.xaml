@@ -4,14 +4,43 @@
              xmlns:wled="clr-namespace:WLED"
              x:Class="WLED.DeviceAddPage"
              BackgroundColor="#222">
+
+    <ContentPage.Resources>
+        <ResourceDictionary>
+            <Style x:Key="LabelStyle" TargetType="Label">
+                <Setter Property="TextColor" Value="White" />
+                <Setter Property="Font" Value="18" />
+                <Setter Property="HorizontalOptions" Value="CenterAndExpand" />
+            </Style>
+            <Style x:Key="EntryStyle" TargetType="Entry">
+                <Setter Property="TextColor" Value="White" />
+                <Setter Property="PlaceholderColor" Value="#888" />
+                <Setter Property="BackgroundColor" Value="#333" />
+                <Setter Property="Margin" Value="10" />
+                <Setter Property="HorizontalOptions" Value="Fill" />
+            </Style>
+        </ResourceDictionary>
+    </ContentPage.Resources>
+    
     <ContentPage.Content>
         <StackLayout>
             <wled:MenuBar x:Name="topMenuBar"/>
-            
-            <Label Text="Welcome to Xamarin.Forms!"
-                VerticalOptions="CenterAndExpand"
-                TextColor="White"
-                HorizontalOptions="CenterAndExpand" />
+
+            <Label Text="WLED device IP address or URL" Style="{StaticResource LabelStyle}" />
+            <Entry x:Name="networkAddressEntry"
+                   Keyboard="Url"
+                   Placeholder="192.168.4.1"
+                   Completed="NetworkAddressEntry_Completed"
+                   ReturnType="Next"
+                   Style="{StaticResource EntryStyle}" />
+
+            <Label Text="Custom Name" Style="{StaticResource LabelStyle}" />
+            <Entry x:Name="nameEntry"
+                   Keyboard="Plain"
+                   Placeholder="(get from device)"
+                   Completed="Entry_Completed"
+                   ReturnType="Done"
+                   Style="{StaticResource EntryStyle}" />
         </StackLayout>
     </ContentPage.Content>
 </ContentPage>
