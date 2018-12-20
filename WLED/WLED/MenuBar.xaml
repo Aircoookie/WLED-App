@@ -1,0 +1,45 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<ContentView xmlns="http://xamarin.com/schemas/2014/forms" 
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="WLED.MenuBar">
+    <ContentView.Resources>
+        <ResourceDictionary>
+            <!--Button style-->
+            <Style x:Key="MenuBarButtonStyle" TargetType="Image">
+                <Setter Property="Scale" Value="0.8" />
+                <Setter Property="Aspect" Value="AspectFit" />
+                <Setter Property="HorizontalOptions" Value="Center" />
+                <Setter Property="VerticalOptions" Value="FillAndExpand" />
+                <Setter Property="Grid.Row" Value="0" />
+            </Style>
+        </ResourceDictionary>
+    </ContentView.Resources>
+    
+    <ContentView.Content>
+        <Grid BackgroundColor="#333">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="45" />
+            </Grid.RowDefinitions>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="65" />
+                <ColumnDefinition Width="*"  />
+                <ColumnDefinition Width="65" />
+            </Grid.ColumnDefinitions>
+            <Image x:Name="imageLeft" Source="icon_back.png" Style="StaticResource{MenuBarButtonStyle}" Grid.Column="0">
+                <Image.GestureRecognizers>
+                    <TapGestureRecognizer Tapped="On_LeftButton_Tapped" />
+                </Image.GestureRecognizers>
+            </Image>
+            <Image Source="wled_logo.png" Style="StaticResource{MenuBarButtonStyle}" Grid.Column="1">
+                <Image.GestureRecognizers>
+                    <TapGestureRecognizer Tapped="On_Logo_Tapped" />
+                </Image.GestureRecognizers>
+            </Image>
+            <Image x:Name="imageRight"  Style="StaticResource{MenuBarButtonStyle}" Grid.Column="2">
+                <Image.GestureRecognizers>
+                    <TapGestureRecognizer Tapped="On_RightButton_Tapped" />
+                </Image.GestureRecognizers>
+            </Image>
+        </Grid>
+    </ContentView.Content>
+</ContentView>

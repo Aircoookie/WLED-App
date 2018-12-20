@@ -1,29 +1,39 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:wled="clr-namespace:WLED"
              x:Class="WLED.DeviceListViewPage"
-               BackgroundColor="#222"
+             BackgroundColor="#222"
              >
+    <ContentView.Resources>
+        <ResourceDictionary>
+            <Style x:Key="LabelStyle" TargetType="Label">
+                <Setter Property="TextColor" Value="White" />
+                <Setter Property="HorizontalOptions" Value="CenterAndExpand" />
+                <Setter Property="VerticalOptions" Value="CenterAndExpand" />
+            </Style>
+        </ResourceDictionary>
+    </ContentView.Resources>
+    
     <StackLayout>
-        <Grid BackgroundColor="#333">
-            <Grid.RowDefinitions>
-                <RowDefinition Height="45" />
-            </Grid.RowDefinitions>
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="65" />
-                <ColumnDefinition Width="*"  />
-                <ColumnDefinition Width="65" />
-            </Grid.ColumnDefinitions>
-            <Image Source="wled_logo.png" Scale="0.8" Aspect="AspectFit" HorizontalOptions="Center" VerticalOptions="FillAndExpand"
-                   Grid.Row="0" Grid.Column="1"/>
-            <Image Source="icon_add.png" Scale="0.8" Aspect="AspectFit" HorizontalOptions="Center" VerticalOptions="FillAndExpand"
-                   Grid.Row="0" Grid.Column="2"/>
-        </Grid>
+        <wled:MenuBar x:Name="topMenuBar"/>
 
+        <Label x:Name="welcomeLabel"
+               Text="Welcome!"
+               Font="Bold, 25"
+               IsVisible="{Binding ListIsEmpty}"
+               Style="{StaticResource LabelStyle}" />
+
+        <Label x:Name="instructionLabel"
+               Font="18"
+               Text="Please use the &quot;+&quot; button to add your WLED lights!"
+               HorizontalTextAlignment="Center"
+               IsVisible="{Binding ListIsEmpty}"
+               Style="{StaticResource LabelStyle}" />
 
         <ListView x:Name="DeviceListView"
                 ItemsSource="{Binding Items}"
-                ItemTapped="Handle_ItemTapped"
+                ItemTapped="On_Item_Tapped"
                 HasUnevenRows="True"
                 CachingStrategy="RecycleElement">
 
@@ -47,7 +57,7 @@
                             <Label Text="{Binding NetworkAddress}" 
                                    Font="18" TextColor="white"
                                    Grid.Row="1" Grid.Column="0" />
-                            <Button Clicked="Handle_PowerButton_Clicked"
+                            <Button Clicked="On_PowerButton_Tapped"
                                     BorderRadius="50" BackgroundColor="#222" BorderColor="White" BorderWidth="4"
                                     Grid.Row="0" Grid.Column="1" Grid.RowSpan="2"/>
                             <Image Source="power.png" Scale ="0.8" Grid.Row="0" Grid.Column="1" Grid.RowSpan="2" InputTransparent="true"/>
@@ -58,9 +68,4 @@
 
         </ListView>
     </StackLayout>
-
-    <!--<ContentPage.ToolbarItems>
-        <ToolbarItem Name="MenuItemAdd" Order="Primary" Icon="wled_logo.png" Text="Add" Priority="0" Activated="Handle_MenuItem_Activated" />
-        <ToolbarItem Name="MenuItemMore" Order="Primary" Icon="add.png" Text="More" Priority="1" Activated="Handle_MenuItem_Activated" />
-    </ContentPage.ToolbarItems>-->
 </ContentPage>

@@ -4,12 +4,13 @@ using System.Text;
 
 namespace WLED
 {
+    enum DeviceStatus { Connecting, Connected, Unreachable, Error };
+
     public class WLEDDevice
     {
         public string NetworkAddress { get; set; }
         public string Name { get; set; }
         int Version { get; }
-        bool Reachable;
 
         public WLEDDevice(string nA, string name, int v)
         {

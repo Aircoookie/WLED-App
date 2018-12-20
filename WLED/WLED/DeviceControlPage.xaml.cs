@@ -16,6 +16,14 @@ namespace WLED
 		{
 			InitializeComponent ();
             UIBrowser.Source = pageURL;
+
+            topMenuBar.SetButtonIcon(ButtonLocation.Left, "icon_back.png");
+            topMenuBar.LeftButtonTapped += On_BackButton_Tapped;
         }
-	}
+
+        async void On_BackButton_Tapped(object sender, EventArgs e)
+        {
+            await Navigation.PopModalAsync();
+        }
+    }
 }

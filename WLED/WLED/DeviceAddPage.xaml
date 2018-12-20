@@ -2,14 +2,16 @@
 <ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              xmlns:wled="clr-namespace:WLED"
-             x:Class="WLED.DeviceControlPage"
+             x:Class="WLED.DeviceAddPage"
              BackgroundColor="#222">
-
     <ContentPage.Content>
         <StackLayout>
             <wled:MenuBar x:Name="topMenuBar"/>
             
-            <WebView x:Name="UIBrowser" WidthRequest="1000" HeightRequest="1000"/>
+            <Label Text="Welcome to Xamarin.Forms!"
+                VerticalOptions="CenterAndExpand"
+                TextColor="White"
+                HorizontalOptions="CenterAndExpand" />
         </StackLayout>
     </ContentPage.Content>
 </ContentPage>

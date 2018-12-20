@@ -13,6 +13,7 @@ namespace WLED
     public partial class DeviceListViewPage : ContentPage
     {
         public ObservableCollection<WLEDDevice> Items { get; set; }
+        bool listIsEmpty;
 
         public DeviceListViewPage()
         {
@@ -20,7 +21,7 @@ namespace WLED
 
             Items = new ObservableCollection<WLEDDevice>
             {
-                new WLEDDevice("10.10.1.11","Table", 1812052),
+                /*new WLEDDevice("10.10.1.11","Table", 1812052),
                 new WLEDDevice("10.10.1.12","Clock", 0),
                 new WLEDDevice("google.com","Sample Device", 0),
                 new WLEDDevice("google.com","Sample Device", 0),
@@ -31,36 +32,42 @@ namespace WLED
                 new WLEDDevice("google.com","Sample Device", 0),
                 new WLEDDevice("google.com","Sample Device", 0),
                 new WLEDDevice("google.com","Sample Device", 0),
-                new WLEDDevice("google.com","Sample Device", 0)
+                new WLEDDevice("google.com","Sample Device", 0)*/
             };
 			
 			DeviceListView.ItemsSource = Items;
+
+            listIsEmpty = (Items.Count == 0);
+
+            topMenuBar.SetButtonIcon(ButtonLocation.Left, "");
+            topMenuBar.SetButtonIcon(ButtonLocation.Right, "icon_add.png");
+            topMenuBar.RightButtonTapped += On_AddButton_Tapped;
         }
 
-        async void Handle_MenuItem_Activated(object sender, ItemTappedEventArgs e)
+        async void On_AddButton_Tapped(object sender, EventArgs e)
         {
-            await DisplayAlert("Item Tapped", "Menu was tapped.", "OK");
+            var page = new DeviceAddPage(this);
+            await Navigation.PushModalAsync(page, false);
         }
 
-        async void Handle_PowerButton_Clicked(object sender, ItemTappedEventArgs e)
+        async void On_PowerButton_Tapped(object sender, ItemTappedEventArgs e)
         {
             Button s = sender as Button;
             WLEDDevice wd = s.Parent.BindingContext as WLEDDevice;
             await DisplayAlert("Item Tapped", wd.Name, "OK");
         }
 
-        async void Handle_ItemTapped(object sender, ItemTappedEventArgs e)
+        async void On_Item_Tapped(object sender, ItemTappedEventArgs e)
         {
             if (e.Item == null)
                 return;
-            WLEDDevice tpdTest = e.Item as WLEDDevice;
+            WLEDDevice targetDevice = e.Item as WLEDDevice;
 
             string url = "http://";
-            url += tpdTest.NetworkAddress;
+            url += targetDevice.NetworkAddress;
 
-            //Device.OpenUri(new Uri(url));
             var page = new DeviceControlPage(url);
-            await Navigation.PushModalAsync(page);
+            await Navigation.PushModalAsync(page, false);
 
             //Deselect Item
             ((ListView)sender).SelectedItem = null;
