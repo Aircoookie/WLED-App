@@ -3,29 +3,46 @@ using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Linq;
 using System.Threading.Tasks;
-
+using System.Xml.Serialization;
 using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
 
 namespace WLED
 {
+    [System.SerializableAttribute()]
+    [System.Xml.Serialization.XmlRootAttribute(Namespace = "", IsNullable = false)]
     [XamlCompilation(XamlCompilationOptions.Compile)]
     public partial class DeviceListViewPage : ContentPage
     {
-        public ObservableCollection<WLEDDevice> Items { get; set; }
+        [XmlElement("Devices")]
+        private ObservableCollection<WLEDDevice> _Items;
 
-        public DeviceListViewPage()
+        public ObservableCollection<WLEDDevice> Items
+        {
+            get
+            {
+                return _Items;
+            }
+            set
+            {
+                _Items = value;
+                DeviceListView.ItemsSource = _Items;
+                UpdateLabelVisibility();
+            }
+        }
+
+    public DeviceListViewPage()
         {
             InitializeComponent();
 
-            Items = new ObservableCollection<WLEDDevice>
+            _Items = new ObservableCollection<WLEDDevice>
             {
                 /*new WLEDDevice("10.10.1.11","Table", 1812052),
                 new WLEDDevice("10.10.1.12","Clock", 0),
                 new WLEDDevice("google.com","Sample Device", 0)*/
             };
 			
-			DeviceListView.ItemsSource = Items;
+			DeviceListView.ItemsSource = _Items;
 
             UpdateLabelVisibility();
 
@@ -44,10 +61,9 @@ namespace WLED
         {
             if (e.CreatedDevice != null)
             {
-                //Items.Add(e.CreatedDevice); TODO re-sort if item name changed
                 int index = 0;
-                while (index < Items.Count && e.CreatedDevice.IsGreaterThan(Items.ElementAt(index))) index++;
-                Items.Insert(index, e.CreatedDevice);
+                while (index < _Items.Count && e.CreatedDevice.IsGreaterThan(_Items.ElementAt(index))) index++;
+                _Items.Insert(index, e.CreatedDevice);
 
                 UpdateLabelVisibility();
             }
@@ -82,7 +98,7 @@ namespace WLED
 
         void UpdateLabelVisibility()
         {
-            bool listIsEmpty = (Items.Count == 0);
+            bool listIsEmpty = (_Items.Count == 0);
 
             welcomeLabel.IsVisible = listIsEmpty;
             instructionLabel.IsVisible = listIsEmpty;
