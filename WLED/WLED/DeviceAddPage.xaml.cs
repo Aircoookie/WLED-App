@@ -18,7 +18,7 @@ namespace WLED
 		{
 			InitializeComponent ();
 
-            topMenuBar.SetButtonIcon(ButtonLocation.Right, "icon_check.png");
+            topMenuBar.SetButtonIcon(ButtonLocation.Right, ButtonIcon.Done);
             topMenuBar.RightButtonTapped += Entry_Completed;
 
             networkAddressEntry.Focus();

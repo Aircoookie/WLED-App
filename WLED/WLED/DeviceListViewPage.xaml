@@ -39,7 +39,7 @@
             <ListView.ItemTemplate>
                 <DataTemplate>
                     <ViewCell>
-                        <Grid Padding ="6">
+                        <Grid Padding ="6" IsVisible="{Binding IsShown}">
                             <Grid.RowDefinitions>
                                 <RowDefinition Height="35" />
                                 <RowDefinition Height="25" />

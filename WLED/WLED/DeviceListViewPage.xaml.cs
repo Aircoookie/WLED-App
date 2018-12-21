@@ -16,6 +16,7 @@ namespace WLED
     {
         [XmlElement("Devices")]
         private ObservableCollection<WLEDDevice> _Items;
+        private bool deletionMode = false;
 
         public ObservableCollection<WLEDDevice> Items
         {
@@ -27,11 +28,11 @@ namespace WLED
             {
                 _Items = value;
                 DeviceListView.ItemsSource = _Items;
-                UpdateLabelVisibility();
+                UpdateElementsVisibility();
             }
         }
 
-    public DeviceListViewPage()
+        public DeviceListViewPage()
         {
             InitializeComponent();
 
@@ -44,17 +45,25 @@ namespace WLED
 			
 			DeviceListView.ItemsSource = _Items;
 
-            UpdateLabelVisibility();
+            UpdateElementsVisibility();
 
-            topMenuBar.SetButtonIcon(ButtonLocation.Right, "icon_add.png");
+            topMenuBar.SetButtonIcon(ButtonLocation.Right, ButtonIcon.Add);
+            topMenuBar.LeftButtonTapped += On_DeleteButton_Tapped;
             topMenuBar.RightButtonTapped += On_AddButton_Tapped;
         }
 
         async void On_AddButton_Tapped(object sender, EventArgs e)
         {
+            if (deletionMode) return;
             var page = new DeviceAddPage(this);
             page.DeviceCreated += On_Device_Created;
             await Navigation.PushModalAsync(page, false);
+        }
+
+        void On_DeleteButton_Tapped(object sender, EventArgs e)
+        {
+            deletionMode = !deletionMode;
+            UpdateElementsVisibility();
         }
 
         void On_Device_Created(object sender, DeviceCreatedEventArgs e)
@@ -65,7 +74,7 @@ namespace WLED
                 while (index < _Items.Count && e.CreatedDevice.IsGreaterThan(_Items.ElementAt(index))) index++;
                 _Items.Insert(index, e.CreatedDevice);
 
-                UpdateLabelVisibility();
+                UpdateElementsVisibility();
             }
         }
 
@@ -78,6 +87,13 @@ namespace WLED
 
         async void On_Item_Tapped(object sender, ItemTappedEventArgs e)
         {
+            if (deletionMode)
+            {
+                _Items.Remove(e.Item as WLEDDevice);
+                UpdateElementsVisibility();
+                return;
+            }
+
             if (e.Item == null) return;
             WLEDDevice targetDevice = e.Item as WLEDDevice;
 
@@ -96,20 +112,25 @@ namespace WLED
             ((ListView)sender).SelectedItem = null;
         }
 
-        void UpdateLabelVisibility()
+        void UpdateElementsVisibility()
         {
             bool listIsEmpty = (_Items.Count == 0);
 
             welcomeLabel.IsVisible = listIsEmpty;
             instructionLabel.IsVisible = listIsEmpty;
 
+            ButtonIcon toSet;
+
             if (listIsEmpty)
             {
-                topMenuBar.SetButtonIcon(ButtonLocation.Left, null);
+                deletionMode = false;
+                toSet = ButtonIcon.None;
             } else
             {
-                topMenuBar.SetButtonIcon(ButtonLocation.Left, "icon_modify.png");
+                toSet = deletionMode ? ButtonIcon.Back : ButtonIcon.Delete;
             }
+            topMenuBar.SetButtonIcon(ButtonLocation.Left, toSet);
+            topMenuBar.SetButtonIcon(ButtonLocation.Right, deletionMode ? ButtonIcon.None : ButtonIcon.Add);
         }
     }
 }

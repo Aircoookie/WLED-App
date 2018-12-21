@@ -10,6 +10,7 @@ using Xamarin.Forms.Xaml;
 namespace WLED
 {
     public enum ButtonLocation { Left, Right }
+    public enum ButtonIcon { None, Back, Add, Delete, Done }
 
     [XamlCompilation(XamlCompilationOptions.Compile)]
     public partial class MenuBar : ContentView
@@ -21,8 +22,18 @@ namespace WLED
             InitializeComponent();
         }
 
-        public void SetButtonIcon(ButtonLocation loc, string path)
+        public void SetButtonIcon(ButtonLocation loc, ButtonIcon ico)
         {
+            string path = "";
+
+            switch (ico)
+            {
+                case ButtonIcon.Back: path = "icon_back.png"; break;
+                case ButtonIcon.Add: path = "icon_add.png"; break;
+                case ButtonIcon.Delete: path = "icon_bin.png"; break;
+                case ButtonIcon.Done: path = "icon_check.png"; break;
+            }
+
             if (loc == ButtonLocation.Left)
             {
                 imageLeft.Source = path;
