@@ -81,32 +81,33 @@ namespace WLED
         async void On_PowerButton_Tapped(object sender, ItemTappedEventArgs e)
         {
             Button s = sender as Button;
-            WLEDDevice wd = s.Parent.BindingContext as WLEDDevice;
-            await DisplayAlert("Item Tapped", wd.Name, "OK");
+            WLEDDevice targetDevice = s.Parent.BindingContext as WLEDDevice;
+            if (targetDevice == null) return;
+
+            string url = NetUtility.PrependHTTPToURL(targetDevice.NetworkAddress);
+            if (url == null) return;
+
+            await DeviceHTTPConnection.Send_WLED_API_Call(url, "T=2");
         }
 
         async void On_Item_Tapped(object sender, ItemTappedEventArgs e)
         {
+            if (e.Item == null) return;
+            WLEDDevice targetDevice = e.Item as WLEDDevice;
+            if (targetDevice == null) return;
+
             if (deletionMode)
             {
-                _Items.Remove(e.Item as WLEDDevice);
+                _Items.Remove(targetDevice);
                 UpdateElementsVisibility();
                 return;
             }
 
-            if (e.Item == null) return;
-            WLEDDevice targetDevice = e.Item as WLEDDevice;
-
-            string url = targetDevice.NetworkAddress;
+            string url = NetUtility.PrependHTTPToURL(targetDevice.NetworkAddress);
             if (url == null) return;
 
-            if (!url.StartsWith("http://")) url = "http://" +url;
-
-            if (url.Length > 7)
-            {
-                var page = new DeviceControlPage(url);
-                await Navigation.PushModalAsync(page, false);
-            }
+            var page = new DeviceControlPage(url);
+            await Navigation.PushModalAsync(page, false);
 
             //Deselect Item
             ((ListView)sender).SelectedItem = null;
