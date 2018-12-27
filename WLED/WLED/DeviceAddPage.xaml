@@ -17,6 +17,7 @@
                 <Setter Property="PlaceholderColor" Value="#888" />
                 <Setter Property="BackgroundColor" Value="#333" />
                 <Setter Property="Margin" Value="10" />
+                <Setter Property="ReturnType" Value="Done" />
                 <Setter Property="HorizontalOptions" Value="Fill" />
             </Style>
         </ResourceDictionary>
@@ -30,8 +31,7 @@
             <Entry x:Name="networkAddressEntry"
                    Keyboard="Url"
                    Placeholder="192.168.4.1"
-                   Completed="NetworkAddressEntry_Completed"
-                   ReturnType="Next"
+                   Completed="Entry_Completed"
                    Style="{StaticResource EntryStyle}" />
 
             <Label Text="Custom Name" Style="{StaticResource LabelStyle}" />
@@ -39,7 +39,6 @@
                    Keyboard="Plain"
                    Placeholder="(get from device)"
                    Completed="Entry_Completed"
-                   ReturnType="Done"
                    Style="{StaticResource EntryStyle}" />
         </StackLayout>
     </ContentPage.Content>

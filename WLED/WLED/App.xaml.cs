@@ -3,6 +3,8 @@ using Xamarin.Forms;
 using Xamarin.Essentials;
 using Xamarin.Forms.Xaml;
 using System.Collections.ObjectModel;
+using System.Collections.Generic;
+using System.Linq;
 
 [assembly: XamlCompilation(XamlCompilationOptions.Compile)]
 namespace WLED
@@ -12,12 +14,15 @@ namespace WLED
 
         private DeviceListViewPage main;
 
+        private bool connectedToLocalLast = false;
+
         public App()
         {
             InitializeComponent();
 
             main = new DeviceListViewPage();
             MainPage = main;
+            Connectivity.ConnectivityChanged += On_ConnectivityChanged;
         }
 
         protected override void OnStart()
@@ -29,7 +34,7 @@ namespace WLED
                 if (!devices.Equals(""))
                 {
                     ObservableCollection<WLEDDevice> fromPreferences = Serialization.Deserialize(devices);
-                    if (fromPreferences != null) main.Items = fromPreferences;
+                    if (fromPreferences != null) main.DeviceList = fromPreferences;
                 }
             }
            
@@ -37,14 +42,23 @@ namespace WLED
 
         protected override void OnSleep()
         {
-            // Handle when your app sleeps, save device list to Preferences
-            string devices = Serialization.SerializeObject(main.Items);
+            // Handle when app sleeps, save device list to Preferences
+            string devices = Serialization.SerializeObject(main.DeviceList);
             Preferences.Set("wleddevices", devices);
         }
 
         protected override void OnResume()
         {
             // Handle when your app resumes
+            main.RefreshAll();
+        }
+
+        private void On_ConnectivityChanged(object sender, ConnectivityChangedEventArgs e)
+        {
+            var profiles = Connectivity.ConnectionProfiles;
+            bool connectedToLocal = (profiles.Contains(ConnectionProfile.WiFi) || profiles.Contains(ConnectionProfile.Ethernet));
+            if (connectedToLocal && !connectedToLocalLast) main.RefreshAll();
+            connectedToLocalLast = connectedToLocal;
         }
     }
 }

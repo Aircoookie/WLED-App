@@ -6,19 +6,39 @@ using System.Threading.Tasks;
 
 namespace WLED
 {
-    class DeviceHTTPConnection
+    class DeviceHttpConnection
     {
-        private static HttpClient Client = new HttpClient();
+        private static DeviceHttpConnection Instance;
 
-        public static async Task<string> Send_WLED_API_Call(string DeviceURI, string API_Call)
+        private HttpClient Client;
+
+        private DeviceHttpConnection ()
+        {
+            Client = new HttpClient();
+            Client.Timeout = TimeSpan.FromSeconds(5);
+        }
+        
+        public static DeviceHttpConnection GetInstance()
+        {
+            if (Instance == null) Instance = new DeviceHttpConnection();
+            return Instance;
+        }
+
+        public async Task<string> Send_WLED_API_Call(string DeviceURI, string API_Call)
         {
             try
             {
                 var result = await Client.GetAsync(DeviceURI + "/win&" + API_Call);
-                return await result.Content.ReadAsStringAsync();
+                if (result.IsSuccessStatusCode)
+                {
+                    return await result.Content.ReadAsStringAsync();
+                } else
+                {
+                    return "err";
+                }
             } catch
             {
-                return "Network Error";
+                return null;
             }
         }
     }

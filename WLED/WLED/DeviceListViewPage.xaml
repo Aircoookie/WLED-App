@@ -12,6 +12,9 @@
                 <Setter Property="HorizontalOptions" Value="CenterAndExpand" />
                 <Setter Property="VerticalOptions" Value="CenterAndExpand" />
             </Style>
+            <Style x:Key="PowerButtonImageStyle" x:Name="imagePowerButtonStyle" TargetType="Image">
+                <Setter Property="Source" Value="icon_power.png" />
+            </Style>
         </ResourceDictionary>
     </ContentPage.Resources>
     
@@ -30,11 +33,12 @@
                Style="{StaticResource LabelStyle}" />
 
         <ListView x:Name="DeviceListView"
-                ItemsSource="{Binding Items}"
+                ItemsSource="{Binding DeviceList}"
                 ItemTapped="On_Item_Tapped"
+                IsPullToRefreshEnabled="True"
+                Refreshing="On_Refresh"
                 HasUnevenRows="True"
                 CachingStrategy="RecycleElement">
-
 
             <ListView.ItemTemplate>
                 <DataTemplate>
@@ -51,14 +55,15 @@
                             <Label Text="{Binding Name}" 
                                    Font="Bold, 25" TextColor="white"
                                    Grid.Row="0" Grid.Column="0" />
-                            <!--Style="{DynamicResource ListItemTextStyle}"-->
-                            <Label Text="{Binding NetworkAddress}" 
+                            <Label Text="{Binding Status}" 
                                    Font="18" TextColor="white"
                                    Grid.Row="1" Grid.Column="0" />
-                            <Button Clicked="On_PowerButton_Tapped"
+                            <Button Clicked="On_PowerButton_Tapped" 
                                     BorderRadius="50" BackgroundColor="#222" BorderColor="White" BorderWidth="4"
-                                    Grid.Row="0" Grid.Column="1" Grid.RowSpan="2"/>
-                            <Image Source="power.png" Scale ="0.8" Grid.Row="0" Grid.Column="1" Grid.RowSpan="2" InputTransparent="true"/>
+                                    Grid.Row="0" Grid.Column="1" Grid.RowSpan="2">
+                            </Button>
+
+                            <Image Style="{DynamicResource PowerButtonImageStyle}" Scale ="0.8" Grid.Row="0" Grid.Column="1" Grid.RowSpan="2" InputTransparent="True"/>
                         </Grid>
                     </ViewCell>
                 </DataTemplate>

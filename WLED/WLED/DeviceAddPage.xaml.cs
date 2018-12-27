@@ -24,23 +24,30 @@ namespace WLED
             networkAddressEntry.Focus();
         }
 
-        private void NetworkAddressEntry_Completed(object sender, EventArgs e)
-        {
-            nameEntry.Focus();
-        }
-
         private async void Entry_Completed(object sender, EventArgs e)
         {
+            var currentEntry = sender as Entry;
+            if (currentEntry != null) currentEntry.Unfocus();
+
+            var device = new WLEDDevice();
+
             string address = networkAddressEntry.Text;
             string name = nameEntry.Text;
 
             if (address == null || address.Length == 0) address = "192.168.4.1";
-            if (name == null || name.Length == 0) name = "New Device";
+            if (address.StartsWith("http://")) address = address.Substring(7);
+            if (address.EndsWith("/")) address = address.Substring(0, address.Length -1);
+            if (name == null || name.Length == 0)
+            {
+                name = "(New Light)";
+                device.NameIsCustom = false;
+            }
 
-            var device = new WLEDDevice(address, name, 0);
+            device.Name = name;
+            device.NetworkAddress = address;
 
-            OnDeviceCreated(new DeviceCreatedEventArgs(device));
             await Navigation.PopModalAsync(false);
+            OnDeviceCreated(new DeviceCreatedEventArgs(device));
         }
 
         protected virtual void OnDeviceCreated(DeviceCreatedEventArgs e)

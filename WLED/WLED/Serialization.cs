@@ -36,9 +36,8 @@ namespace WLED
                     return xmlSerializer.Deserialize(textReader) as ObservableCollection<WLEDDevice>;
                 }
             }
-            catch (Exception e)
-            {
-                
+            catch
+            {     
                 return null;
             }
         }

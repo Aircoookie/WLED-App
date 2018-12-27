@@ -8,8 +8,10 @@
     <ContentPage.Content>
         <StackLayout>
             <wled:MenuBar x:Name="topMenuBar"/>
-            
-            <WebView x:Name="UIBrowser" WidthRequest="1000" HeightRequest="1000"/>
+
+            <Label x:Name="loadingLabel" Text="Loading..." Font="18" TextColor="white" HorizontalOptions="CenterAndExpand" />
+
+            <WebView x:Name="UIBrowser" WidthRequest="2000" HeightRequest="2000"/>
         </StackLayout>
     </ContentPage.Content>
 </ContentPage>
