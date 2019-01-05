@@ -159,6 +159,12 @@ namespace WLED
             await Navigation.PushModalAsync(page, false);
         }
 
+        internal async void OpenAPDeviceControlPage()
+        {
+            var page = new DeviceControlPage("http://192.168.4.1", null);
+            await Navigation.PushModalAsync(page, false);
+        }
+
         private void UpdateElementsVisibility()
         {
             bool listIsEmpty = (_DeviceList.Count == 0);

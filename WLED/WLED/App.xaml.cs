@@ -27,6 +27,7 @@ namespace WLED
 
         protected override void OnStart()
         {
+            if (NetUtility.IsConnectedToWledAP()) main.OpenAPDeviceControlPage();
             // Load device list from Preferences
             if (Preferences.ContainsKey("wleddevices"))
             {
@@ -37,7 +38,6 @@ namespace WLED
                     if (fromPreferences != null) main.DeviceList = fromPreferences;
                 }
             }
-           
         }
 
         protected override void OnSleep()
@@ -49,7 +49,8 @@ namespace WLED
 
         protected override void OnResume()
         {
-            // Handle when your app resumes
+            // Handle when app resumes
+            if (NetUtility.IsConnectedToWledAP()) main.OpenAPDeviceControlPage();
             main.RefreshAll();
         }
 
@@ -57,6 +58,7 @@ namespace WLED
         {
             var profiles = Connectivity.ConnectionProfiles;
             bool connectedToLocal = (profiles.Contains(ConnectionProfile.WiFi) || profiles.Contains(ConnectionProfile.Ethernet));
+            if (connectedToLocal && NetUtility.IsConnectedToWledAP()) main.OpenAPDeviceControlPage();
             if (connectedToLocal && !connectedToLocalLast) main.RefreshAll();
             connectedToLocalLast = connectedToLocal;
         }

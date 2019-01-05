@@ -18,6 +18,7 @@ namespace WLED
 		{
 			InitializeComponent ();
             currentDevice = device;
+            if (currentDevice == null) loadingLabel.Text = "Loading... (WLED-AP)";
             UIBrowser.Source = pageURL;
             UIBrowser.Navigated += On_NavigationCompleted;
         }
