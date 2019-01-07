@@ -39,6 +39,7 @@ namespace WLED
 
             DeviceList = new ObservableCollection<WLEDDevice>();
 
+            Resources["PowerButtonImageStyle"] = Resources["PowerButtonImageStylePower"];
             topMenuBar.SetButtonIcon(ButtonLocation.Right, ButtonIcon.Add);
             topMenuBar.LeftButtonTapped += On_DeletionModeButton_Tapped;
             topMenuBar.RightButtonTapped += On_AddButton_Tapped;
@@ -61,6 +62,7 @@ namespace WLED
         private void On_DeletionModeButton_Tapped(object sender, EventArgs e)
         {
             deletionMode = !deletionMode;
+            Resources["PowerButtonImageStyle"] = Resources[deletionMode? "PowerButtonImageStyleDelete" : "PowerButtonImageStylePower"];
             UpdateElementsVisibility();
         }
 
@@ -79,7 +81,8 @@ namespace WLED
             {
                 foreach (WLEDDevice d in _DeviceList)
                 {
-                    if (toAdd.NetworkAddress.Equals(d.NetworkAddress)) //ensure there is only one device entry per IP
+                    //ensure there is only one device entry per IP
+                    if (toAdd.NetworkAddress.Equals(d.NetworkAddress))
                     {
                         if (toAdd.NameIsCustom)
                         {
@@ -106,7 +109,7 @@ namespace WLED
             }
         }
 
-        public void Reinsert_Device_Sorted(WLEDDevice d)
+        private void Reinsert_Device_Sorted(WLEDDevice d)
         {
             if (d == null) return;
             if (_DeviceList.Remove(d)) Insert_Device_Sorted(d);
@@ -118,7 +121,7 @@ namespace WLED
             WLEDDevice targetDevice = s.Parent.BindingContext as WLEDDevice;
             if (targetDevice == null) return;
 
-            if (deletionMode) //power button will function as delete button
+            if (deletionMode) //power button functions as delete button
             {
                 _DeviceList.Remove(targetDevice);
                 UpdateElementsVisibility();
@@ -128,19 +131,9 @@ namespace WLED
             targetDevice.SendAPICall("T=2");
         }
 
-        private void On_PowerButton_PanUpdated(object sender, PanUpdatedEventArgs e)
-        {
-            Image s = sender as Image;
-            WLEDDevice targetDevice = s.Parent.BindingContext as WLEDDevice;
-            if (targetDevice == null) return;
-
-            targetDevice.brightnessCurrent = e.TotalY;
-            System.Diagnostics.Debug.WriteLine(e.TotalY);
-        }
-
         private async void On_Item_Tapped(object sender, ItemTappedEventArgs e)
         {
-            //Deselect Item
+            //Deselect Item immediately
             ((ListView)sender).SelectedItem = null;
 
             if (e.Item == null) return;
@@ -184,9 +177,6 @@ namespace WLED
             }
             topMenuBar.SetButtonIcon(ButtonLocation.Left, toSet);
             topMenuBar.SetButtonIcon(ButtonLocation.Right, deletionMode ? ButtonIcon.None : ButtonIcon.Add);
-
-            //TODO DOESNT WORK
-            imagePowerButtonStyle.Setters.ElementAt(0).Value = deletionMode ? ImageSource.FromFile("icon_back.png") : ImageSource.FromFile("icon_power.png");
         }
 
         internal void RefreshAll()

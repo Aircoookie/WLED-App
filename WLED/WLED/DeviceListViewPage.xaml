@@ -12,8 +12,11 @@
                 <Setter Property="HorizontalOptions" Value="CenterAndExpand" />
                 <Setter Property="VerticalOptions" Value="CenterAndExpand" />
             </Style>
-            <Style x:Key="PowerButtonImageStyle" x:Name="imagePowerButtonStyle" TargetType="Image">
+            <Style x:Key="PowerButtonImageStylePower" TargetType="Image">
                 <Setter Property="Source" Value="icon_power.png" />
+            </Style>
+            <Style x:Key="PowerButtonImageStyleDelete" TargetType="Image">
+                <Setter Property="Source" Value="icon_delete.png" />
             </Style>
         </ResourceDictionary>
     </ContentPage.Resources>

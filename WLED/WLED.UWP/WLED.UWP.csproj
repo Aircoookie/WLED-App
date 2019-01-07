@@ -153,8 +153,6 @@
     <Content Include="icon_add.png" />
     <Content Include="icon_back.png" />
     <Content Include="icon_delete.png" />
-    <Content Include="icon_hidden.png" />
-    <Content Include="icon_hide.png" />
     <Content Include="icon_modify.png" />
     <Content Include="icon_power.png" />
     <Content Include="Properties\Default.rd.xml" />
