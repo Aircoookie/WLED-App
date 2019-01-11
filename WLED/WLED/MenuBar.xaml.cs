@@ -17,6 +17,7 @@ namespace WLED
     {
         public event EventHandler LeftButtonTapped, RightButtonTapped;
 
+        //custom menu bar present on all content pages
         public MenuBar()
         {
             InitializeComponent();

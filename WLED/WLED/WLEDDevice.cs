@@ -4,6 +4,7 @@ using System.ComponentModel;
 using System.Text;
 using System.Threading.Tasks;
 using System.Xml.Serialization;
+using Xamarin.Forms;
 
 namespace WLED
 {
@@ -15,18 +16,13 @@ namespace WLED
         private string networkAddress;
         private string name = "";
         private DeviceStatus status = DeviceStatus.Default;
-       
+        private bool stateCurrent = false;
+
         [XmlElement("url")]
         public string NetworkAddress
         {
-            set
-            {
-                networkAddress = value;
-            }
-            get
-            {
-                return networkAddress;
-            }
+            set { networkAddress = value; }
+            get { return networkAddress; }
         }
 
         [XmlElement("name")]
@@ -38,10 +34,7 @@ namespace WLED
                 name = value;
                 OnPropertyChanged("Name");
             }
-            get
-            {
-                return name;
-            }
+            get { return name; }
         }
 
         internal DeviceStatus CurrentStatus
@@ -51,10 +44,7 @@ namespace WLED
                 status = value;
                 OnPropertyChanged("Status");
             }
-            get
-            {
-                return status;
-            }
+            get { return status; }
         }
 
         [XmlElement("namecustom")]
@@ -67,7 +57,17 @@ namespace WLED
         public bool IsShown { get; set; } = true;
 
         [XmlIgnore]
-        public double brightnessCurrent { get; set; }
+        public double BrightnessCurrent { get; set; }
+
+        [XmlIgnore]
+        public bool StateCurrent
+        {
+            get { return stateCurrent; }
+            set { OnPropertyChanged("StateColor"); stateCurrent = value; }
+        }
+
+        [XmlIgnore]
+        public Color StateColor { get { return StateCurrent ? Color.FromHex("#666") : Color.FromHex("#222"); } }
 
         public string Status
         {
@@ -116,7 +116,10 @@ namespace WLED
             else
             {
                 CurrentStatus = DeviceStatus.Default;
-                if (!NameIsCustom) Name = XmlApiResponseParser.GetNameFromResponse(response);
+                XmlApiResponse deviceResponse = XmlApiResponseParser.ParseApiResponse(response);
+                if (!NameIsCustom) Name = deviceResponse.Name;
+                BrightnessCurrent = deviceResponse.Brightness;
+                StateCurrent = deviceResponse.State;
             }
             System.Diagnostics.Debug.WriteLine("Call Done");
         }

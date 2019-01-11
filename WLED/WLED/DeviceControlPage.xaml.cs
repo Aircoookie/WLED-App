@@ -14,6 +14,7 @@ namespace WLED
 	{
         private WLEDDevice currentDevice;
 
+        //open a web view that loads the mobile UI natively hosted on WLED device
 		public DeviceControlPage (string pageURL, WLEDDevice device)
 		{
 			InitializeComponent ();
