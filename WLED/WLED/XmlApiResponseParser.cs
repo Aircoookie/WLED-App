@@ -15,10 +15,10 @@ namespace WLED
             try
             {
                 XElement xe = XElement.Parse(xml);
-                if (xe == null) return resp;
+                if (xe == null) return null;
                 resp.Name = xe.Element("ds")?.Value;
                 if (resp.Name == null) resp.Name = xe.Element("desc")?.Value; //try legacy XML element name (pre WLED 0.6.0)
-                if (resp.Name == null) return resp; //if we return at this point, parsing was unsuccessful (server likely not WLED device)
+                if (resp.Name == null) return null; //if we return at this point, parsing was unsuccessful (server likely not WLED device)
 
                 string bri_s = xe.Element("ac")?.Value;
                 if (bri_s == null) bri_s = xe.Element("act")?.Value; //try legacy XML element name (pre WLED 0.6.0)

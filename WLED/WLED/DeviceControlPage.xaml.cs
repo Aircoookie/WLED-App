@@ -22,6 +22,7 @@ namespace WLED
             if (currentDevice == null) loadingLabel.Text = "Loading... (WLED-AP)";
             UIBrowser.Source = pageURL;
             UIBrowser.Navigated += On_NavigationCompleted;
+            topMenuBar.LeftButtonTapped += On_BackButtonTapped;
         }
 
         private void On_NavigationCompleted(object sender, WebNavigatedEventArgs e)
@@ -36,6 +37,12 @@ namespace WLED
                 loadingLabel.IsVisible = true;
                 loadingLabel.Text = "Device Unreachable";
             }
+        }
+
+        private async void On_BackButtonTapped(object sender, EventArgs e)
+        {
+            await Navigation.PopModalAsync(false);
+            currentDevice?.Refresh();
         }
     }
 }

@@ -28,7 +28,13 @@ namespace WLED
         {
             try
             {
-                var result = await Client.GetAsync(DeviceURI + "/win&" + API_Call);
+                string apiCommand = "/win";
+                if (API_Call != null && API_Call.Length > 0)
+                {
+                    apiCommand += "&";
+                    apiCommand += API_Call;
+                }
+                var result = await Client.GetAsync(DeviceURI + apiCommand);
                 if (result.IsSuccessStatusCode)
                 {
                     return await result.Content.ReadAsStringAsync();

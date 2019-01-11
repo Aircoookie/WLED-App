@@ -27,7 +27,10 @@
         <StackLayout>
             <wled:MenuBar x:Name="topMenuBar"/>
 
-            <Label Text="WLED device IP address or URL" Style="{StaticResource LabelStyle}" />
+            <Button Text="Discover lights..." BackgroundColor="#333" TextColor="White" Margin="10" Clicked="On_DiscoveryButtonClicked"/>
+            <BoxView HeightRequest="1" HorizontalOptions="Fill" Margin="8,0" BackgroundColor="#888"/>
+            <Label Text="Add a light manually:" Style="{StaticResource LabelStyle}" />
+            <Label Text="IP address or URL" Style="{StaticResource LabelStyle}" />
             <Entry x:Name="networkAddressEntry"
                    Keyboard="Url"
                    Placeholder="192.168.4.1"

@@ -30,7 +30,7 @@ namespace WLED
         { 
             set
             {
-                if (value == null) return; //make sure name is not set to null
+                if (value == null || name.Equals(value)) return; //make sure name is not set to null
                 name = value;
                 OnPropertyChanged("Name");
             }
@@ -99,7 +99,7 @@ namespace WLED
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
 
-        public async void SendAPICall(string call)
+        public async Task<bool> SendAPICall(string call)
         {
             System.Diagnostics.Debug.WriteLine("Call");
             string url = "http://" + networkAddress;
@@ -108,27 +108,30 @@ namespace WLED
             if (response == null)
             {
                 CurrentStatus = DeviceStatus.Unreachable;
+                return false;
             }
             else if (response.Equals("err"))
             {
                 CurrentStatus = DeviceStatus.Error;
+                return false;
             }
             else
             {
                 CurrentStatus = DeviceStatus.Default;
                 XmlApiResponse deviceResponse = XmlApiResponseParser.ParseApiResponse(response);
+                if (deviceResponse == null) return false;
                 if (!NameIsCustom) Name = deviceResponse.Name;
                 BrightnessCurrent = deviceResponse.Brightness;
                 StateCurrent = deviceResponse.State;
+                return true;
             }
             System.Diagnostics.Debug.WriteLine("Call Done");
         }
 
-        public void Refresh()
+        public async Task<bool> Refresh()
         {
             //fetches updated values from WLED device
-            SendAPICall("");
-            System.Diagnostics.Debug.WriteLine("Refresh Done");
+            return await SendAPICall("");
         }
 
         public int CompareTo(object comp)

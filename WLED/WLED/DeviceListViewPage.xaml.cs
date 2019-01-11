@@ -95,7 +95,7 @@ namespace WLED
                 Insert_Device_Sorted(toAdd);
 
                 toAdd.PropertyChanged += Device_PropertyChanged;
-                toAdd.Refresh();
+                if (e.RefreshRequired) toAdd.Refresh();
 
                 UpdateElementsVisibility();
             }

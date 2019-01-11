@@ -13,6 +13,7 @@ namespace WLED
 	public partial class DeviceAddPage : ContentPage
 	{
         public event EventHandler<DeviceCreatedEventArgs> DeviceCreated;
+        private bool discoveryMode = false;
 
 		public DeviceAddPage (DeviceListViewPage list)
 		{
@@ -50,12 +51,43 @@ namespace WLED
             OnDeviceCreated(new DeviceCreatedEventArgs(device));
         }
 
+        private void On_DiscoveryButtonClicked(object sender, EventArgs e)
+        {
+            discoveryMode = !discoveryMode;
+            Button b = sender as Button;
+            if (b == null) return;
+            var discovery = DeviceDiscovery.GetInstance();
+            if (discoveryMode)
+            {
+                b.Text = "Stop discovery";
+                discovery.ValidDeviceFound += OnDeviceCreated;
+                discovery.StartDiscovery();
+            } else
+            {
+                discovery.StopDiscovery();
+                discovery.ValidDeviceFound -= OnDeviceCreated;
+                b.Text = "Discover lights...";
+            }      
+        }
+
         protected virtual void OnDeviceCreated(DeviceCreatedEventArgs e)
         {
-            EventHandler<DeviceCreatedEventArgs> handler = DeviceCreated;
-            if (handler != null)
+            DeviceCreated?.Invoke(this, e);
+        }
+
+        private void OnDeviceCreated(object sender, DeviceCreatedEventArgs e)
+        {
+            OnDeviceCreated(e);
+        }
+
+        protected override void OnDisappearing()
+        {
+            //stop discovery if running
+            if (discoveryMode)
             {
-                handler(this, e);
+                var discovery = DeviceDiscovery.GetInstance();
+                discovery.StopDiscovery();
+                discovery.ValidDeviceFound -= OnDeviceCreated;
             }
         }
     }
@@ -63,10 +95,12 @@ namespace WLED
     public class DeviceCreatedEventArgs
     {
         public WLEDDevice CreatedDevice { get; }
+        public bool RefreshRequired { get; } = true;
 
-        public DeviceCreatedEventArgs(WLEDDevice created)
+        public DeviceCreatedEventArgs(WLEDDevice created, bool refresh = true)
         {
             CreatedDevice = created;
+            RefreshRequired = refresh;
         }
     }
 }
