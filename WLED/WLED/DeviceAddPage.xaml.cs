@@ -60,11 +60,13 @@ namespace WLED
             if (discoveryMode)
             {
                 b.Text = "Stop discovery";
+                discovery.DiscoveryResult += OnDiscoveryResult;
                 discovery.ValidDeviceFound += OnDeviceCreated;
                 discovery.StartDiscovery();
             } else
             {
                 discovery.StopDiscovery();
+                discovery.DiscoveryResult -= OnDiscoveryResult;
                 discovery.ValidDeviceFound -= OnDeviceCreated;
                 b.Text = "Discover lights...";
             }      
@@ -80,6 +82,11 @@ namespace WLED
             OnDeviceCreated(e);
         }
 
+        private void OnDiscoveryResult(object sender, DiscoveryResultEventArgs e)
+        {
+            DisplayAlert(e.WasSuccessful ? "Discovery Result" : "Discovery Error", e.Message, "OK");
+        }
+
         protected override void OnDisappearing()
         {
             //stop discovery if running
@@ -87,6 +94,7 @@ namespace WLED
             {
                 var discovery = DeviceDiscovery.GetInstance();
                 discovery.StopDiscovery();
+                discovery.DiscoveryResult -= OnDiscoveryResult;
                 discovery.ValidDeviceFound -= OnDeviceCreated;
             }
         }
