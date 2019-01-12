@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.IO;
 using System.Text;
+using System.Xml;
 using System.Xml.Serialization;
 
 namespace WLED
@@ -17,10 +18,14 @@ namespace WLED
         {
             XmlSerializer xmlSerializer = new XmlSerializer(toSerialize.GetType());
 
-            using (StringWriter textWriter = new StringWriter())
+            XmlWriterSettings ws = new XmlWriterSettings();
+            ws.NewLineHandling = NewLineHandling.None;
+            ws.Indent = false;
+            StringBuilder stringBuilder = new StringBuilder();
+            using (XmlWriter xmlWriter = XmlWriter.Create(stringBuilder, ws))
             {
-                xmlSerializer.Serialize(textWriter, toSerialize);
-                return textWriter.ToString();
+                xmlSerializer.Serialize(xmlWriter, toSerialize);
+                return stringBuilder.ToString();
             }
         }
 

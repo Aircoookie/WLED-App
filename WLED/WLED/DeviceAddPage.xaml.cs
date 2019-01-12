@@ -14,6 +14,7 @@ namespace WLED
 	{
         public event EventHandler<DeviceCreatedEventArgs> DeviceCreated;
         private bool discoveryMode = false;
+        private int devicesFoundCount = 0;
 
 		public DeviceAddPage (DeviceListViewPage list)
 		{
@@ -48,7 +49,9 @@ namespace WLED
             device.NetworkAddress = address;
 
             await Navigation.PopModalAsync(false);
-            OnDeviceCreated(new DeviceCreatedEventArgs(device));
+
+            //add device, but not if the user clicked checkmark after doing auto-discovery only
+            if (devicesFoundCount == 0 || !address.Equals("192.168.4.1")) OnDeviceCreated(new DeviceCreatedEventArgs(device));
         }
 
         private void On_DiscoveryButtonClicked(object sender, EventArgs e)
@@ -60,13 +63,14 @@ namespace WLED
             if (discoveryMode)
             {
                 b.Text = "Stop discovery";
-                discovery.DiscoveryResult += OnDiscoveryResult;
+                devicesFoundCount = 0;
                 discovery.ValidDeviceFound += OnDeviceCreated;
+                discoveryResultLabel.IsVisible = true;
+                discoveryResultLabel.Text = "Found no lights yet...";
                 discovery.StartDiscovery();
             } else
             {
                 discovery.StopDiscovery();
-                discovery.DiscoveryResult -= OnDiscoveryResult;
                 discovery.ValidDeviceFound -= OnDeviceCreated;
                 b.Text = "Discover lights...";
             }      
@@ -79,12 +83,17 @@ namespace WLED
 
         private void OnDeviceCreated(object sender, DeviceCreatedEventArgs e)
         {
-            OnDeviceCreated(e);
-        }
+            //this method only gets called by mDNS search, display found devices
+            devicesFoundCount++;
+            if (devicesFoundCount == 1)
+            {
+                discoveryResultLabel.Text = "Found " + e.CreatedDevice.Name + "!";
+            } else
+            {
+                discoveryResultLabel.Text = "Found " + e.CreatedDevice.Name + " and " + (devicesFoundCount - 1) + " other lights!";
+            }
 
-        private void OnDiscoveryResult(object sender, DiscoveryResultEventArgs e)
-        {
-            DisplayAlert(e.WasSuccessful ? "Discovery Result" : "Discovery Error", e.Message, "OK");
+            OnDeviceCreated(e);
         }
 
         protected override void OnDisappearing()
@@ -94,7 +103,6 @@ namespace WLED
             {
                 var discovery = DeviceDiscovery.GetInstance();
                 discovery.StopDiscovery();
-                discovery.DiscoveryResult -= OnDiscoveryResult;
                 discovery.ValidDeviceFound -= OnDeviceCreated;
             }
         }

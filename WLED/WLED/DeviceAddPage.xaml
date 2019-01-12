@@ -28,6 +28,7 @@
             <wled:MenuBar x:Name="topMenuBar"/>
 
             <Button Text="Discover lights..." BackgroundColor="#333" TextColor="White" Margin="10" Clicked="On_DiscoveryButtonClicked"/>
+            <Label x:Name="discoveryResultLabel" Text="" Style="{StaticResource LabelStyle}" IsVisible="False" />
             <BoxView HeightRequest="1" HorizontalOptions="Fill" Margin="8,0" BackgroundColor="#888"/>
             <Label Text="Add a light manually:" Style="{StaticResource LabelStyle}" />
             <Label Text="IP address or URL" Style="{StaticResource LabelStyle}" />

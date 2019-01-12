@@ -47,14 +47,11 @@ namespace WLED
             get { return status; }
         }
 
-        [XmlElement("namecustom")]
+        [XmlElement("ncustom")]
         public bool NameIsCustom { get; set; } = true;
 
         [XmlElement("en")]
         public bool IsEnabled { get; set; } = true;
-
-        [XmlIgnore]
-        public bool IsShown { get; set; } = true;
 
         [XmlIgnore]
         public double BrightnessCurrent { get; set; }
@@ -125,7 +122,6 @@ namespace WLED
                 StateCurrent = deviceResponse.State;
                 return true;
             }
-            System.Diagnostics.Debug.WriteLine("Call Done");
         }
 
         public async Task<bool> Refresh()

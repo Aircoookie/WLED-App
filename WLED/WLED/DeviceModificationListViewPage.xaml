@@ -1,0 +1,49 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:wled="clr-namespace:WLED"
+             x:Class="WLED.DeviceModificationListViewPage"
+             BackgroundColor="#222">
+
+    <StackLayout>
+        <wled:MenuBar x:Name="topMenuBar"/>
+        <Label Text="Click on devices to hide them!" 
+               HorizontalOptions="CenterAndExpand" VerticalOptions="CenterAndExpand"
+               TextColor="White" Font="18"/>
+
+        <ListView x:Name="DeviceModificationListView"
+                ItemsSource="{Binding DeviceList}"
+                ItemTapped="OnDeviceTapped"
+                HasUnevenRows="True"
+                CachingStrategy="RecycleElement">
+
+            <ListView.ItemTemplate>
+                <DataTemplate>
+                    <ViewCell>
+                        <Grid Margin="6,2" Padding ="6">
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="35" />
+                                <RowDefinition Height="25" />
+                            </Grid.RowDefinitions>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*" />
+                                <ColumnDefinition Width="65" />
+                            </Grid.ColumnDefinitions>
+                            <Label Text="{Binding Name}" 
+                                   Font="Bold, 25" TextColor="white"
+                                   Grid.Row="0" Grid.Column="0" />
+                            <Label Text="{Binding Status}" 
+                                   Font="18" TextColor="white"
+                                   Grid.Row="1" Grid.Column="0" />
+                            <Button Clicked="OnDeleteButtonTapped" BackgroundColor="#D9321F"
+                                    BorderRadius="50" BorderColor="White" BorderWidth="4"
+                                    Grid.Row="0" Grid.Column="1" Grid.RowSpan="2" />
+
+                            <Image Source="icon_delete.png" Scale ="0.8" Grid.Row="0" Grid.Column="1" Grid.RowSpan="2" InputTransparent="True" BackgroundColor="Transparent"/>
+                        </Grid>
+                    </ViewCell>
+                </DataTemplate>
+            </ListView.ItemTemplate>
+        </ListView>
+    </StackLayout>
+</ContentPage>

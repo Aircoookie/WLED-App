@@ -12,12 +12,6 @@
                 <Setter Property="HorizontalOptions" Value="CenterAndExpand" />
                 <Setter Property="VerticalOptions" Value="CenterAndExpand" />
             </Style>
-            <Style x:Key="PowerButtonImageStylePower" TargetType="Image">
-                <Setter Property="Source" Value="icon_power.png" />
-            </Style>
-            <Style x:Key="PowerButtonImageStyleDelete" TargetType="Image">
-                <Setter Property="Source" Value="icon_delete.png" />
-            </Style>
         </ResourceDictionary>
     </ContentPage.Resources>
     
@@ -46,11 +40,11 @@
             <ListView.ItemTemplate>
                 <DataTemplate>
                     <ViewCell>
-                        <Grid Padding ="6" IsVisible="{Binding IsShown}">
+                        <Grid Margin="6,2" Padding="6" IsVisible="{Binding IsEnabled}">
                             <Grid.RowDefinitions>
                                 <RowDefinition Height="35" />
                                 <RowDefinition Height="25" />
-                                <RowDefinition Height="20" />
+                                <RowDefinition Height="25" />
                             </Grid.RowDefinitions>
                             <Grid.ColumnDefinitions>
                                 <ColumnDefinition Width="*" />
@@ -65,10 +59,9 @@
                             <Button Clicked="On_PowerButton_Tapped" 
                                     BorderRadius="50" BackgroundColor="{Binding StateColor}" BorderColor="White" BorderWidth="4"
                                     Grid.Row="0" Grid.Column="1" Grid.RowSpan="2" />
+                            <Image Source="icon_power.png" Scale ="0.8" Grid.Row="0" Grid.Column="1" Grid.RowSpan="2" InputTransparent="True" BackgroundColor="Transparent"/>
 
                             <Slider Value="{Binding BrightnessCurrent}" Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="2" />
-
-                            <Image Style="{DynamicResource PowerButtonImageStyle}" Scale ="0.8" Grid.Row="0" Grid.Column="1" Grid.RowSpan="2" InputTransparent="True"/>
                         </Grid>
                     </ViewCell>
                 </DataTemplate>

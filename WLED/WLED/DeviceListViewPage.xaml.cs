@@ -39,7 +39,7 @@ namespace WLED
 
             DeviceList = new ObservableCollection<WLEDDevice>();
 
-            Resources["PowerButtonImageStyle"] = Resources["PowerButtonImageStylePower"];
+            topMenuBar.SetButtonIcon(ButtonLocation.Left, ButtonIcon.Delete);
             topMenuBar.SetButtonIcon(ButtonLocation.Right, ButtonIcon.Add);
             topMenuBar.LeftButtonTapped += On_DeletionModeButton_Tapped;
             topMenuBar.RightButtonTapped += On_AddButton_Tapped;
@@ -59,11 +59,10 @@ namespace WLED
             await Navigation.PushModalAsync(page, false);
         }
 
-        private void On_DeletionModeButton_Tapped(object sender, EventArgs e)
+        private async void On_DeletionModeButton_Tapped(object sender, EventArgs e)
         {
-            deletionMode = !deletionMode;
-            Resources["PowerButtonImageStyle"] = Resources[deletionMode? "PowerButtonImageStyleDelete" : "PowerButtonImageStylePower"];
-            UpdateElementsVisibility();
+            var page = new DeviceModificationListViewPage(_DeviceList);
+            await Navigation.PushModalAsync(page, false);
         }
 
         private void Insert_Device_Sorted(WLEDDevice d)
@@ -88,6 +87,7 @@ namespace WLED
                         {
                             d.Name = toAdd.Name;
                             d.NameIsCustom = true;
+                            Reinsert_Device_Sorted(d);
                         }
                         return;
                     }
@@ -121,14 +121,12 @@ namespace WLED
             WLEDDevice targetDevice = s.Parent.BindingContext as WLEDDevice;
             if (targetDevice == null) return;
 
-            if (deletionMode) //power button functions as delete button
-            {
-                _DeviceList.Remove(targetDevice);
-                UpdateElementsVisibility();
-                return;
-            }
-
             targetDevice.SendAPICall("T=2");
+        }
+
+        protected override void OnAppearing()
+        {
+            UpdateElementsVisibility();
         }
 
         private async void On_Item_Tapped(object sender, ItemTappedEventArgs e)
@@ -139,12 +137,6 @@ namespace WLED
             if (e.Item == null) return;
             WLEDDevice targetDevice = e.Item as WLEDDevice;
             if (targetDevice == null) return;
-
-            if (deletionMode) //toggle device visibility in list
-            {
-                //not implemented
-                return;
-            }
 
             string url = "http://" + targetDevice.NetworkAddress;
 
@@ -164,27 +156,12 @@ namespace WLED
 
             welcomeLabel.IsVisible = listIsEmpty;
             instructionLabel.IsVisible = listIsEmpty;
-
-            ButtonIcon toSet;
-
-            if (listIsEmpty)
-            {
-                deletionMode = false;
-                toSet = ButtonIcon.None;
-            } else
-            {
-                toSet = deletionMode ? ButtonIcon.Back : ButtonIcon.Delete;
-            }
-            topMenuBar.SetButtonIcon(ButtonLocation.Left, toSet);
-            topMenuBar.SetButtonIcon(ButtonLocation.Right, deletionMode ? ButtonIcon.None : ButtonIcon.Add);
+            topMenuBar.SetButtonIcon(ButtonLocation.Left, listIsEmpty ? ButtonIcon.None : ButtonIcon.Delete);
         }
 
         internal void RefreshAll()
         {
-            foreach (WLEDDevice d in _DeviceList)
-            {
-                d.Refresh();
-            }
+            foreach (WLEDDevice d in _DeviceList) d.Refresh();
         }
     }
 }
