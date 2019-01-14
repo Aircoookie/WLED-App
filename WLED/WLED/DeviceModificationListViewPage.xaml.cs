@@ -37,14 +37,10 @@ namespace WLED
             //Deselect Item immediately
             ((ListView)sender).SelectedItem = null;
 
-            if (e.Item == null) return;
             WLEDDevice targetDevice = e.Item as WLEDDevice;
             if (targetDevice == null) return;
 
-            string url = "http://" + targetDevice.NetworkAddress;
-
-            var page = new DeviceControlPage(url, targetDevice);
-            await Navigation.PushModalAsync(page, false);
+            targetDevice.IsEnabled = !targetDevice.IsEnabled;
         }
     }
 }

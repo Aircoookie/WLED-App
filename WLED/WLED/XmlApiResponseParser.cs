@@ -26,7 +26,7 @@ namespace WLED
                 {
                     int bri = 0;
                     Int32.TryParse(bri_s, out bri);
-                    if (bri > 0) resp.Brightness = (byte)bri; //keep stored brightness if brightness == 0
+                    resp.Brightness = (byte)bri;
                     resp.State = (bri > 0); //light is on if brightness > 0
                 }
 

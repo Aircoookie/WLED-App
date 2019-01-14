@@ -34,6 +34,9 @@ namespace WLED
                     apiCommand += "&";
                     apiCommand += API_Call;
                 }
+                System.Diagnostics.Debug.Write(apiCommand);
+                System.Diagnostics.Debug.Write(" -> ");
+                System.Diagnostics.Debug.WriteLine(DeviceURI);
                 var result = await Client.GetAsync(DeviceURI + apiCommand);
                 if (result.IsSuccessStatusCode)
                 {

@@ -95,7 +95,7 @@ namespace WLED
                 Insert_Device_Sorted(toAdd);
 
                 toAdd.PropertyChanged += Device_PropertyChanged;
-                if (e.RefreshRequired) toAdd.Refresh();
+                if (e.RefreshRequired) _ = toAdd.Refresh();
 
                 UpdateElementsVisibility();
             }
@@ -121,7 +121,19 @@ namespace WLED
             WLEDDevice targetDevice = s.Parent.BindingContext as WLEDDevice;
             if (targetDevice == null) return;
 
-            targetDevice.SendAPICall("T=2");
+            _ = targetDevice.SendAPICall("T=2");
+        }
+
+        private void OnBrightnessSliderValueChanged(object sender, ValueChangedEventArgs e)
+        {
+            Slider s = sender as Slider;
+            if (!s.IsFocused) return; //only send if we changed the slider value manually
+            WLEDDevice targetDevice = s.Parent.BindingContext as WLEDDevice;
+            System.Diagnostics.Debug.Write(e.OldValue);
+            System.Diagnostics.Debug.Write(">!");
+            System.Diagnostics.Debug.WriteLine(e.NewValue);
+            byte toSend = (byte) Math.Round(e.NewValue);
+            RateLimitedSender.SendAPICall(targetDevice, "A=" + toSend);
         }
 
         protected override void OnAppearing()
@@ -161,7 +173,7 @@ namespace WLED
 
         internal void RefreshAll()
         {
-            foreach (WLEDDevice d in _DeviceList) d.Refresh();
+            foreach (WLEDDevice d in _DeviceList) _ = d.Refresh();
         }
     }
 }

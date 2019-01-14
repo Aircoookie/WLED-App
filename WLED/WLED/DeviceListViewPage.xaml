@@ -40,29 +40,33 @@
             <ListView.ItemTemplate>
                 <DataTemplate>
                     <ViewCell>
-                        <Grid Margin="6,2" Padding="6" IsVisible="{Binding IsEnabled}">
-                            <Grid.RowDefinitions>
-                                <RowDefinition Height="35" />
-                                <RowDefinition Height="25" />
-                                <RowDefinition Height="25" />
-                            </Grid.RowDefinitions>
-                            <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="*" />
-                                <ColumnDefinition Width="65" />
-                            </Grid.ColumnDefinitions>
-                            <Label Text="{Binding Name}" 
-                                   Font="Bold, 25" TextColor="white"
-                                   Grid.Row="0" Grid.Column="0" />
-                            <Label Text="{Binding Status}" 
-                                   Font="18" TextColor="white"
-                                   Grid.Row="1" Grid.Column="0" />
-                            <Button Clicked="On_PowerButton_Tapped" 
-                                    BorderRadius="50" BackgroundColor="{Binding StateColor}" BorderColor="White" BorderWidth="4"
-                                    Grid.Row="0" Grid.Column="1" Grid.RowSpan="2" />
-                            <Image Source="icon_power.png" Scale ="0.8" Grid.Row="0" Grid.Column="1" Grid.RowSpan="2" InputTransparent="True" BackgroundColor="Transparent"/>
+                        <StackLayout IsVisible="{Binding IsEnabled}" HeightRequest="{Binding ListHeight}">
+                            <Grid Padding="6" Margin="6,2" >
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="35" />
+                                    <RowDefinition Height="25" />
+                                    <RowDefinition Height="25" />
+                                </Grid.RowDefinitions>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="*" />
+                                    <ColumnDefinition Width="65" />
+                                </Grid.ColumnDefinitions>
+                                <Label Text="{Binding Name}" 
+                                       Font="Bold, 25" TextColor="white"
+                                       Grid.Row="0" Grid.Column="0" />
+                                <Label Text="{Binding Status}" 
+                                       Font="18" TextColor="white"
+                                       Grid.Row="1" Grid.Column="0" />
+                                <Button Clicked="On_PowerButton_Tapped" 
+                                        BorderRadius="50" BackgroundColor="{Binding StateColor}" BorderColor="White" BorderWidth="4"
+                                        Grid.Row="0" Grid.Column="1" Grid.RowSpan="2" />
+                                <Image Source="icon_power.png" Scale ="0.8" Grid.Row="0" Grid.Column="1" Grid.RowSpan="2" InputTransparent="True" BackgroundColor="Transparent"/>
 
-                            <Slider Value="{Binding BrightnessCurrent}" Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="2" />
-                        </Grid>
+                                <Slider Maximum="255.1" Minimum="0.9" Value="{Binding BrightnessCurrent, Mode=OneWay}"
+                                        MinimumTrackColor="White" MaximumTrackColor="#333"
+                                        Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="2" ValueChanged="OnBrightnessSliderValueChanged" />
+                            </Grid>
+                        </StackLayout>
                     </ViewCell>
                 </DataTemplate>
             </ListView.ItemTemplate>

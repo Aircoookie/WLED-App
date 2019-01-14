@@ -30,10 +30,10 @@
                                 <ColumnDefinition Width="65" />
                             </Grid.ColumnDefinitions>
                             <Label Text="{Binding Name}" 
-                                   Font="Bold, 25" TextColor="white"
+                                   Font="Bold, 25" TextColor="{Binding TextColor}"
                                    Grid.Row="0" Grid.Column="0" />
                             <Label Text="{Binding Status}" 
-                                   Font="18" TextColor="white"
+                                   Font="18" TextColor="{Binding TextColor}"
                                    Grid.Row="1" Grid.Column="0" />
                             <Button Clicked="OnDeleteButtonTapped" BackgroundColor="#D9321F"
                                     BorderRadius="50" BorderColor="White" BorderWidth="4"
