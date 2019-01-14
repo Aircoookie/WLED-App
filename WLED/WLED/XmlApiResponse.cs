@@ -9,7 +9,7 @@ namespace WLED
     class XmlApiResponse
     {
         public byte Brightness { get; set; } = 128;
-        public bool State { get; set; } = false;
+        public bool IsOn { get; set; } = false;
         public Color LightColor { get; set; }
         public string Name { get; set; } = "";
     }

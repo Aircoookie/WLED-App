@@ -12,12 +12,12 @@ namespace WLED
     public enum ButtonLocation { Left, Right }
     public enum ButtonIcon { None, Back, Add, Delete, Done }
 
+    //View Element: Custom menu bar present on all content pages
     [XamlCompilation(XamlCompilationOptions.Compile)]
     public partial class MenuBar : ContentView
     {
         public event EventHandler LeftButtonTapped, RightButtonTapped;
 
-        //custom menu bar present on all content pages
         public MenuBar()
         {
             InitializeComponent();
@@ -44,12 +44,12 @@ namespace WLED
             }
         }
 
-        void On_Logo_Tapped(object sender, ItemTappedEventArgs e)
+        void OnLogoTapped(object sender, ItemTappedEventArgs e)
         {
             Device.OpenUri(new Uri("https://github.com/Aircoookie/WLED"));
         }
 
-        protected virtual void On_LeftButton_Tapped(object sender, ItemTappedEventArgs e)
+        protected virtual void OnLeftButtonTapped(object sender, ItemTappedEventArgs e)
         {
             EventHandler handler = LeftButtonTapped;
             if (handler != null)
@@ -57,17 +57,14 @@ namespace WLED
                 handler(this, e);
             } else
             {
+                //The default left button behavior is a back button (if the parent view doesn't attach a custom handler)
                 Navigation.PopModalAsync(false);
             }
         }
 
-        protected virtual void On_RightButton_Tapped(object sender, ItemTappedEventArgs e)
+        protected virtual void OnRightButtonTapped(object sender, ItemTappedEventArgs e)
         {
-            EventHandler handler = RightButtonTapped;
-            if (handler != null)
-            {
-                handler(this, e);
-            }
+            RightButtonTapped?.Invoke(this, e);
         }
     }
 }

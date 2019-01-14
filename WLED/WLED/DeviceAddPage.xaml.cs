@@ -1,14 +1,10 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
 using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
 
 namespace WLED
 {
+    //Viewmodel: Page for adding new lights
 	[XamlCompilation(XamlCompilationOptions.Compile)]
 	public partial class DeviceAddPage : ContentPage
 	{
@@ -16,20 +12,20 @@ namespace WLED
         private bool discoveryMode = false;
         private int devicesFoundCount = 0;
 
-		public DeviceAddPage (DeviceListViewPage list)
+		public DeviceAddPage(DeviceListViewPage list)
 		{
 			InitializeComponent ();
 
             topMenuBar.SetButtonIcon(ButtonLocation.Right, ButtonIcon.Done);
-            topMenuBar.RightButtonTapped += Entry_Completed;
+            topMenuBar.RightButtonTapped += OnEntryCompleted;
 
             networkAddressEntry.Focus();
         }
 
-        private async void Entry_Completed(object sender, EventArgs e)
+        //If done, create device and close page
+        private async void OnEntryCompleted(object sender, EventArgs e)
         {
-            var currentEntry = sender as Entry;
-            if (currentEntry != null) currentEntry.Unfocus();
+            if (sender is Entry currentEntry) currentEntry.Unfocus();
 
             var device = new WLEDDevice();
 
@@ -50,11 +46,11 @@ namespace WLED
 
             await Navigation.PopModalAsync(false);
 
-            //add device, but not if the user clicked checkmark after doing auto-discovery only
+            //Add device, but not if the user clicked checkmark after doing auto-discovery only
             if (devicesFoundCount == 0 || !address.Equals("192.168.4.1")) OnDeviceCreated(new DeviceCreatedEventArgs(device));
         }
 
-        private void On_DiscoveryButtonClicked(object sender, EventArgs e)
+        private void OnDiscoveryButtonClicked(object sender, EventArgs e)
         {
             discoveryMode = !discoveryMode;
             Button b = sender as Button;
@@ -62,6 +58,7 @@ namespace WLED
             var discovery = DeviceDiscovery.GetInstance();
             if (discoveryMode)
             {
+                //Start mDNS discovery
                 b.Text = "Stop discovery";
                 devicesFoundCount = 0;
                 discovery.ValidDeviceFound += OnDeviceCreated;
@@ -70,6 +67,7 @@ namespace WLED
                 discovery.StartDiscovery();
             } else
             {
+                //Stop mDNS discovery
                 discovery.StopDiscovery();
                 discovery.ValidDeviceFound -= OnDeviceCreated;
                 b.Text = "Discover lights...";
@@ -116,6 +114,9 @@ namespace WLED
         public DeviceCreatedEventArgs(WLEDDevice created, bool refresh = true)
         {
             CreatedDevice = created;
+
+            //DeviceDiscovery already made an API request to confirm that the new device is a WLED light,
+            //so a refresh is only required for manually added devices
             RefreshRequired = refresh;
         }
     }

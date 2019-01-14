@@ -1,6 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Collections.ObjectModel;
+﻿using System.Collections.ObjectModel;
 using System.IO;
 using System.Text;
 using System.Xml;
@@ -12,6 +10,7 @@ namespace WLED
      *  Source: https://stackoverflow.com/questions/2434534/serialize-an-object-to-string
      */
 
+    //convert WLEDDevice list <-> string
     static class Serialization
     {
         public static string SerializeObject<T>(T toSerialize)

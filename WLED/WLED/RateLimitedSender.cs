@@ -6,6 +6,7 @@ using System.Timers;
 
 namespace WLED
 {
+    //When updating a brightness slider, only send 4 API calls per second as to not overload network or WLED light
     class RateLimitedSender
     {
         private static Timer timer;
@@ -21,12 +22,12 @@ namespace WLED
 
         public static void SendAPICall(WLEDDevice t, string call)
         {
-            alreadySent = false;
             if (timer.Enabled)
             {
-                //save to send when waiting period over
+                //Save to send once waiting period over
                 target = t;
                 toSend = call;
+                alreadySent = false;
                 return;
             }
             timer.Start();

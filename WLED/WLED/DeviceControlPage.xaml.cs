@@ -9,23 +9,23 @@ using Xamarin.Forms.Xaml;
 
 namespace WLED
 {
-	[XamlCompilation(XamlCompilationOptions.Compile)]
+    //Viewmodel: Open a web view that loads the mobile UI natively hosted on WLED device
+    [XamlCompilation(XamlCompilationOptions.Compile)]
 	public partial class DeviceControlPage : ContentPage
 	{
         private WLEDDevice currentDevice;
 
-        //open a web view that loads the mobile UI natively hosted on WLED device
 		public DeviceControlPage (string pageURL, WLEDDevice device)
 		{
 			InitializeComponent ();
             currentDevice = device;
-            if (currentDevice == null) loadingLabel.Text = "Loading... (WLED-AP)";
+            if (currentDevice == null) loadingLabel.Text = "Loading... (WLED-AP)"; //If the device is null, we are connected to the WLED light's access point
             UIBrowser.Source = pageURL;
-            UIBrowser.Navigated += On_NavigationCompleted;
-            topMenuBar.LeftButtonTapped += On_BackButtonTapped;
+            UIBrowser.Navigated += OnNavigationCompleted;
+            topMenuBar.LeftButtonTapped += OnBackButtonTapped;
         }
 
-        private void On_NavigationCompleted(object sender, WebNavigatedEventArgs e)
+        private void OnNavigationCompleted(object sender, WebNavigatedEventArgs e)
         {
             if (e.Result == WebNavigationResult.Success)
             {
@@ -39,10 +39,10 @@ namespace WLED
             }
         }
 
-        private async void On_BackButtonTapped(object sender, EventArgs e)
+        private async void OnBackButtonTapped(object sender, EventArgs e)
         {
             await Navigation.PopModalAsync(false);
-            currentDevice?.Refresh();
+            currentDevice?.Refresh(); //refresh device list item to apply changes made in the control page
         }
     }
 }

@@ -10,6 +10,7 @@ using Xamarin.Forms.Xaml;
 
 namespace WLED
 {
+    //Viewmodel: Page for hiding and deleting existing device list entries
 	[XamlCompilation(XamlCompilationOptions.Compile)]
 	public partial class DeviceModificationListViewPage : ContentPage
 	{
@@ -25,22 +26,24 @@ namespace WLED
         private void OnDeleteButtonTapped(object sender, ItemTappedEventArgs e)
         {
             Button s = sender as Button;
-            WLEDDevice targetDevice = s.Parent.BindingContext as WLEDDevice;
-            if (targetDevice == null) return;
+            if (!(s.Parent.BindingContext is WLEDDevice targetDevice)) return;
 
             DeviceList.Remove(targetDevice);
+
+            //Go back to main device list view if no devices in list
             if (DeviceList.Count == 0) Navigation.PopModalAsync(false);
         }
 
-        private async void OnDeviceTapped(object sender, ItemTappedEventArgs e)
+        private void OnDeviceTapped(object sender, ItemTappedEventArgs e)
         {
             //Deselect Item immediately
             ((ListView)sender).SelectedItem = null;
 
-            WLEDDevice targetDevice = e.Item as WLEDDevice;
-            if (targetDevice == null) return;
-
-            targetDevice.IsEnabled = !targetDevice.IsEnabled;
+            if (e.Item is WLEDDevice targetDevice)
+            {
+                //Toggle Device enabled (disabled = hidden in list)
+                targetDevice.IsEnabled = !targetDevice.IsEnabled;
+            }
         }
     }
 }

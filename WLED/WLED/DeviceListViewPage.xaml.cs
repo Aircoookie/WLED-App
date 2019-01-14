@@ -9,28 +9,24 @@ using Xamarin.Forms.Xaml;
 
 namespace WLED
 {
+    //ViewModel: Main device list page with power button and brightness slider per device
     [System.SerializableAttribute()]
     [System.Xml.Serialization.XmlRootAttribute(Namespace = "", IsNullable = false)]
     [XamlCompilation(XamlCompilationOptions.Compile)]
     public partial class DeviceListViewPage : ContentPage
     {
-        [XmlElement("Devices")]
-        private ObservableCollection<WLEDDevice> _DeviceList;
-        private bool deletionMode = false;
+        private ObservableCollection<WLEDDevice> deviceList;
 
         public ObservableCollection<WLEDDevice> DeviceList
         {
-            get
-            {
-                return _DeviceList;
-            }
             set
             {
-                _DeviceList = value;
-                DeviceListView.ItemsSource = _DeviceList;
+                deviceList = value;
+                DeviceListView.ItemsSource = deviceList;
                 RefreshAll();
                 UpdateElementsVisibility();
             }
+            get { return deviceList; }
         }
 
         public DeviceListViewPage()
@@ -41,44 +37,37 @@ namespace WLED
 
             topMenuBar.SetButtonIcon(ButtonLocation.Left, ButtonIcon.Delete);
             topMenuBar.SetButtonIcon(ButtonLocation.Right, ButtonIcon.Add);
-            topMenuBar.LeftButtonTapped += On_DeletionModeButton_Tapped;
-            topMenuBar.RightButtonTapped += On_AddButton_Tapped;
+            topMenuBar.LeftButtonTapped += OnDeletionModeButtonTapped;
+            topMenuBar.RightButtonTapped += OnAddButtonTapped;
         }
 
-        private void On_Refresh(object sender, EventArgs e)
+        private void OnRefresh(object sender, EventArgs e)
         {
             RefreshAll();
             DeviceListView.EndRefresh();
         }
 
-        private async void On_AddButton_Tapped(object sender, EventArgs e)
+        private async void OnAddButtonTapped(object sender, EventArgs e)
         {
-            if (deletionMode) return;
             var page = new DeviceAddPage(this);
-            page.DeviceCreated += On_Device_Created;
+            page.DeviceCreated += OnDeviceCreated;
             await Navigation.PushModalAsync(page, false);
         }
 
-        private async void On_DeletionModeButton_Tapped(object sender, EventArgs e)
+        private async void OnDeletionModeButtonTapped(object sender, EventArgs e)
         {
-            var page = new DeviceModificationListViewPage(_DeviceList);
+            if (deviceList.Count == 0) return; //do not enter deletion view if there are no devices
+            var page = new DeviceModificationListViewPage(deviceList);
             await Navigation.PushModalAsync(page, false);
         }
 
-        private void Insert_Device_Sorted(WLEDDevice d)
-        {
-            int index = 0;
-            while (index < _DeviceList.Count && d.CompareTo(_DeviceList.ElementAt(index)) > 0) index++;
-            _DeviceList.Insert(index, d);
-        }
-
-        private void On_Device_Created(object sender, DeviceCreatedEventArgs e)
+        private void OnDeviceCreated(object sender, DeviceCreatedEventArgs e)
         {
             WLEDDevice toAdd = e.CreatedDevice;
 
             if (toAdd != null)
             {
-                foreach (WLEDDevice d in _DeviceList)
+                foreach (WLEDDevice d in deviceList)
                 {
                     //ensure there is only one device entry per IP
                     if (toAdd.NetworkAddress.Equals(d.NetworkAddress))
@@ -87,59 +76,67 @@ namespace WLED
                         {
                             d.Name = toAdd.Name;
                             d.NameIsCustom = true;
-                            Reinsert_Device_Sorted(d);
+                            ReinsertDeviceSorted(d);
                         }
                         return;
                     }
                 }
-                Insert_Device_Sorted(toAdd);
+                InsertDeviceSorted(toAdd);
 
-                toAdd.PropertyChanged += Device_PropertyChanged;
+                toAdd.PropertyChanged += DevicePropertyChanged;
                 if (e.RefreshRequired) _ = toAdd.Refresh();
 
                 UpdateElementsVisibility();
             }
         }
 
-        private void Device_PropertyChanged(object sender, PropertyChangedEventArgs e)
+        //Re-Insert device in list if its name changed to maintain alphabetical sorting
+        private void DevicePropertyChanged(object sender, PropertyChangedEventArgs e)
         {
-            if (((PropertyChangedEventArgs)e).PropertyName.Equals("Name"))
+            if (e.PropertyName.Equals("Name"))
             {
-                Reinsert_Device_Sorted(sender as WLEDDevice);
+                ReinsertDeviceSorted(sender as WLEDDevice);
             }
         }
 
-        private void Reinsert_Device_Sorted(WLEDDevice d)
+        private void InsertDeviceSorted(WLEDDevice d)
         {
-            if (d == null) return;
-            if (_DeviceList.Remove(d)) Insert_Device_Sorted(d);
+            int index = 0;
+            while (index < deviceList.Count && d.CompareTo(deviceList.ElementAt(index)) > 0) index++;
+            deviceList.Insert(index, d);
         }
 
-        private void On_PowerButton_Tapped(object sender, ItemTappedEventArgs e)
+        private void ReinsertDeviceSorted(WLEDDevice d)
+        {
+            if (d == null) return;
+            if (deviceList.Remove(d)) InsertDeviceSorted(d);
+        }
+
+        private void OnPowerButtonTapped(object sender, ItemTappedEventArgs e)
         {
             Button s = sender as Button;
-            WLEDDevice targetDevice = s.Parent.BindingContext as WLEDDevice;
-            if (targetDevice == null) return;
-
-            _ = targetDevice.SendAPICall("T=2");
+            if (s.Parent.BindingContext is WLEDDevice targetDevice)
+            {
+                _ = targetDevice.SendAPICall("T=2"); //Toggle On/Off API call
+            }
         }
 
         protected override void OnAppearing()
         {
+            //Returning from deletion or add pages
             UpdateElementsVisibility();
         }
 
-        private async void On_Item_Tapped(object sender, ItemTappedEventArgs e)
+        private async void OnDeviceTapped(object sender, ItemTappedEventArgs e)
         {
             //Deselect Item immediately
             ((ListView)sender).SelectedItem = null;
 
-            if (e.Item == null) return;
-            WLEDDevice targetDevice = e.Item as WLEDDevice;
-            if (targetDevice == null) return;
+            if (!(e.Item is WLEDDevice targetDevice)) return;
 
             string url = "http://" + targetDevice.NetworkAddress;
 
+            //Open web UI control page
             var page = new DeviceControlPage(url, targetDevice);
             await Navigation.PushModalAsync(page, false);
         }
@@ -150,9 +147,9 @@ namespace WLED
             await Navigation.PushModalAsync(page, false);
         }
 
-        private void UpdateElementsVisibility()
+        private void UpdateElementsVisibility() //Show welcome labels and hide deletion mode button if there are no devices
         {
-            bool listIsEmpty = (_DeviceList.Count == 0);
+            bool listIsEmpty = (deviceList.Count == 0);
 
             welcomeLabel.IsVisible = listIsEmpty;
             instructionLabel.IsVisible = listIsEmpty;
@@ -161,7 +158,7 @@ namespace WLED
 
         internal void RefreshAll()
         {
-            foreach (WLEDDevice d in _DeviceList) _ = d.Refresh();
+            foreach (WLEDDevice d in deviceList) _ = d.Refresh();
         }
     }
 }

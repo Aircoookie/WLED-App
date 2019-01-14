@@ -10,8 +10,8 @@ namespace WLED
     {
         public static XmlApiResponse ParseApiResponse(string xml)
         {
-            XmlApiResponse resp = new XmlApiResponse();
-            if (xml == null) return resp;
+            if (xml == null) return null;
+            XmlApiResponse resp = new XmlApiResponse(); //XmlApiResponse object will contain parsed values
             try
             {
                 XElement xe = XElement.Parse(xml);
@@ -27,7 +27,7 @@ namespace WLED
                     int bri = 0;
                     Int32.TryParse(bri_s, out bri);
                     resp.Brightness = (byte)bri;
-                    resp.State = (bri > 0); //light is on if brightness > 0
+                    resp.IsOn = (bri > 0); //light is on if brightness > 0
                 }
 
                 double r = 0, g = 0, b = 0;
@@ -45,12 +45,12 @@ namespace WLED
                     counter++;
                 }
                 resp.LightColor = new Color(r, g, b);
-                System.Diagnostics.Debug.WriteLine(resp.LightColor.ToString());
+                return resp;
             } catch
             {
-                //Exceptions here indicate unsuccessful parsing and may thus be ignored
+                //Exceptions here indicate unsuccessful parsing
             }
-            return resp;
+            return null;
         }
     }
 }

@@ -1,11 +1,10 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Text;
 using System.Threading.Tasks;
 using Tmds.MDns;
 
 namespace WLED
 {
+    //Discover _http._tcp services via mDNS/Zeroconf and verify they are WLED devices by sending an API call
     class DeviceDiscovery
     {
         private static DeviceDiscovery Instance;
@@ -18,14 +17,14 @@ namespace WLED
             serviceBrowser.ServiceAdded += OnServiceAdded;
         }
 
-        public async void StartDiscovery()
+        public void StartDiscovery()
         {
             serviceBrowser.StartBrowse("_http._tcp");
         }
 
         public void StopDiscovery()
         {
-            serviceBrowser?.StopBrowse();
+            serviceBrowser.StopBrowse();
         }
 
         private async void OnServiceAdded(object sender, ServiceAnnouncementEventArgs e)
@@ -37,8 +36,7 @@ namespace WLED
             }
             toAdd.Name = e.Announcement.Hostname;
             toAdd.NameIsCustom = false;
-            bool valid = await toAdd.Refresh();
-            if (valid)
+            if (await toAdd.Refresh()) //check if the service is a valid WLED light
             {
                 OnValidDeviceFound(new DeviceCreatedEventArgs(toAdd, false));
             }

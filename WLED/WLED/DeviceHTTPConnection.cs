@@ -28,26 +28,23 @@ namespace WLED
         {
             try
             {
-                string apiCommand = "/win";
+                string apiCommand = "/win"; //WLED http API URI
                 if (API_Call != null && API_Call.Length > 0)
                 {
                     apiCommand += "&";
                     apiCommand += API_Call;
                 }
-                System.Diagnostics.Debug.Write(apiCommand);
-                System.Diagnostics.Debug.Write(" -> ");
-                System.Diagnostics.Debug.WriteLine(DeviceURI);
                 var result = await Client.GetAsync(DeviceURI + apiCommand);
                 if (result.IsSuccessStatusCode)
                 {
                     return await result.Content.ReadAsStringAsync();
-                } else
+                } else //404 or other non-success status codes, indicates that target is not WLED device
                 {
                     return "err";
                 }
             } catch
             {
-                return null;
+                return null; //time-out or other connection error
             }
         }
     }
