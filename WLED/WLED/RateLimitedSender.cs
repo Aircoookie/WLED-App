@@ -15,7 +15,7 @@ namespace WLED
 
         static RateLimitedSender()
         {
-            timer = new Timer(200);
+            timer = new Timer(250);
             timer.Elapsed += OnWaitPeriodOver;
         }
 

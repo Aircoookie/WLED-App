@@ -62,9 +62,9 @@
                                         Grid.Row="0" Grid.Column="1" Grid.RowSpan="2" />
                                 <Image Source="icon_power.png" Scale ="0.8" Grid.Row="0" Grid.Column="1" Grid.RowSpan="2" InputTransparent="True" BackgroundColor="Transparent"/>
 
-                                <Slider Maximum="255.1" Minimum="0.9" Value="{Binding BrightnessCurrent, Mode=OneWay}"
-                                        MinimumTrackColor="White" MaximumTrackColor="#333"
-                                        Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="2" ValueChanged="OnBrightnessSliderValueChanged" />
+                                <Slider Maximum="255.1" Minimum="0.9" Value="{Binding BrightnessCurrent, Mode=TwoWay}"
+                                        MinimumTrackColor="{Binding ColorCurrent}" MaximumTrackColor="#333" ThumbColor="White"
+                                        Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="2" />
                             </Grid>
                         </StackLayout>
                     </ViewCell>

@@ -18,6 +18,7 @@ namespace WLED
         private DeviceStatus status = DeviceStatus.Default;
         private bool stateCurrent = false;
         private bool isEnabled = true;
+        private double brightnessReceived = 0.9, brightnessCurrent = 0.9;
 
         [XmlElement("url")]
         public string NetworkAddress
@@ -66,7 +67,25 @@ namespace WLED
         }
 
         [XmlIgnore]
-        public double BrightnessCurrent { get; set; } = 0.9;
+        public double BrightnessCurrent
+        {
+            set
+            {
+                brightnessCurrent = value;
+                if (brightnessCurrent != brightnessReceived) //only send if value was changed by slider
+                {
+                    byte toSend = (byte)Math.Round(brightnessCurrent);
+                    RateLimitedSender.SendAPICall(this, "A=" + toSend);
+                }
+            }
+            get { return brightnessCurrent; }
+        }
+
+        [XmlIgnore]
+        public Color ColorCurrent
+        {
+            get; set;
+        }
 
         [XmlIgnore]
         public bool StateCurrent
@@ -117,8 +136,6 @@ namespace WLED
 
         protected virtual void OnPropertyChanged(string propertyName)
         {
-            System.Diagnostics.Debug.Write("pC");
-            System.Diagnostics.Debug.WriteLine(propertyName);
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
 
@@ -143,10 +160,13 @@ namespace WLED
                 XmlApiResponse deviceResponse = XmlApiResponseParser.ParseApiResponse(response);
                 if (deviceResponse == null) return false;
                 if (!NameIsCustom) Name = deviceResponse.Name;
-                if (deviceResponse.Brightness > 0)
+                if (deviceResponse.Brightness > 0 && !call.Contains("A=")) //only account for brightness if light is on
                 {
-                    BrightnessCurrent = deviceResponse.Brightness; //only account for brightness if light is on
-                    OnPropertyChanged("BrightnessCurrent");
+                    brightnessReceived = deviceResponse.Brightness;
+                    BrightnessCurrent = brightnessReceived;
+                    OnPropertyChanged("BrightnessCurrent"); //update slider binding
+                    ColorCurrent = deviceResponse.LightColor;
+                    OnPropertyChanged("ColorCurrent");
                 }
                 StateCurrent = deviceResponse.State;
                 return true;

@@ -124,18 +124,6 @@ namespace WLED
             _ = targetDevice.SendAPICall("T=2");
         }
 
-        private void OnBrightnessSliderValueChanged(object sender, ValueChangedEventArgs e)
-        {
-            Slider s = sender as Slider;
-            if (!s.IsFocused) return; //only send if we changed the slider value manually
-            WLEDDevice targetDevice = s.Parent.BindingContext as WLEDDevice;
-            System.Diagnostics.Debug.Write(e.OldValue);
-            System.Diagnostics.Debug.Write(">!");
-            System.Diagnostics.Debug.WriteLine(e.NewValue);
-            byte toSend = (byte) Math.Round(e.NewValue);
-            RateLimitedSender.SendAPICall(targetDevice, "A=" + toSend);
-        }
-
         protected override void OnAppearing()
         {
             UpdateElementsVisibility();

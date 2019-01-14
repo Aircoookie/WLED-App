@@ -38,12 +38,14 @@ namespace WLED
                     Int32.TryParse(el?.Value, out co);
                     switch (counter)
                     {
-                        case 0: r = co / 255; break;
-                        case 1: g = co / 255; break;
-                        case 2: b = co / 255; break;
+                        case 0: r = co / 255.0; break;
+                        case 1: g = co / 255.0; break;
+                        case 2: b = co / 255.0; break;
                     }
+                    counter++;
                 }
                 resp.LightColor = new Color(r, g, b);
+                System.Diagnostics.Debug.WriteLine(resp.LightColor.ToString());
             } catch
             {
                 //Exceptions here indicate unsuccessful parsing and may thus be ignored
