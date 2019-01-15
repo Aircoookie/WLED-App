@@ -1,4 +1,4 @@
-![WLED logo](https://raw.githubusercontent.com/Aircoookie/WLED/master/wled_logo.png)
+[![Available on Google Play](https://play.google.com/intl/en_us/badges/images/generic/en_badge_web_generic.png)](https://play.google.com/store/apps/details?id=com.aircoookie.WLED&pcampaignid=MKT-Other-global-all-co-prtnr-py-PartBadge-Mar2515-1)
 
 ## Welcome to the WLED app! (v1.0.2)
 
@@ -26,9 +26,17 @@ However, you can either use a VPN to connect to your home network (if your route
 Keep in mind that this exposes your light(s) to the public internet, so please be aware that it is not a secure solution.  
 If you want to risk it, at least take the precaution of enabling the WLED [OTA lock](https://github.com/Aircoookie/WLED/wiki/Security) feature and, if possible, only connect it to a guest network.  
 
+#### Where can I get the UWP app?
+
+Right now my primary goal is Android support.  
+The UWP platform is tested and confirmed to work, but right now you need to install Xamarin.Forms for Visual Studio and build it yourself.
+In the future, I will look into ways of distributing the UWP binaries via appstores or releases.
+
 #### Why is there no iOS support?
 
 While I would certainly see the appeal of an iOS version, Apple's Mac-development-only and Appstore-only policies make it hard for me personally to support the platform.  
 That said, since this is a cross-platform app based on the Xamarin.Forms framework, adding iOS support is relatively easy if you have the infrastructure!  
 (iOS testing device(s), MacOS computer for developing and already paying the annual store fee for another project)  
 If you would like to help the project, feel free to PR any required changes for iOS support and/or publish it to the AppStore!  
+
+Google Play and the Google Play logo are trademarks of Google LLC.
