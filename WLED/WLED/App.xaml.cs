@@ -29,6 +29,9 @@ namespace WLED
 
             listview = new DeviceListViewPage();
             MainPage = listview;
+            //MainPage.SetValue(NavigationPage.BarTextColorProperty, Color.White);
+            Application.Current.MainPage.SetValue(NavigationPage.BarBackgroundColorProperty, "#0000AA");
+
             Connectivity.ConnectivityChanged += OnConnectivityChanged;
         }
 

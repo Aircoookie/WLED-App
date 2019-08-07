@@ -145,6 +145,10 @@ namespace WLED
         public async Task<bool> SendAPICall(string call)
         {
             string url = "http://" + networkAddress;
+            if (networkAddress.StartsWith("https://"))
+            {
+                url = networkAddress;
+            }
 
             string response = await DeviceHttpConnection.GetInstance().Send_WLED_API_Call(url, call);
             if (response == null)

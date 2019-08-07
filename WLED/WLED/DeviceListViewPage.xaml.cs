@@ -29,6 +29,7 @@ namespace WLED
             get { return deviceList; }
         }
 
+
         public DeviceListViewPage()
         {
             InitializeComponent();
@@ -40,6 +41,8 @@ namespace WLED
             topMenuBar.LeftButtonTapped += OnDeletionModeButtonTapped;
             topMenuBar.RightButtonTapped += OnAddButtonTapped;
         }
+
+
 
         private void OnRefresh(object sender, EventArgs e)
         {
@@ -154,6 +157,15 @@ namespace WLED
             welcomeLabel.IsVisible = listIsEmpty;
             instructionLabel.IsVisible = listIsEmpty;
             topMenuBar.SetButtonIcon(ButtonLocation.Left, listIsEmpty ? ButtonIcon.None : ButtonIcon.Delete);
+
+            //iOS workaround for listview not updating unless ItemSource is modified
+            if (Device.RuntimePlatform == Device.iOS)
+            {
+                WLEDDevice dummy = new WLEDDevice();
+                deviceList.Add(dummy);
+                deviceList.Remove(dummy);
+            }
+
         }
 
         internal void RefreshAll()
