@@ -34,9 +34,6 @@ In the future, I will look into ways of distributing the UWP binaries via appsto
 
 #### Why is there no iOS support?
 
-While I would certainly see the appeal of an iOS version, Apple's Mac-development-only and Appstore-only policies make it hard for me personally to support the platform.  
-That said, since this is a cross-platform app based on the Xamarin.Forms framework, adding iOS support is relatively easy if you have the infrastructure!  
-(iOS testing device(s), MacOS computer for developing and already paying the annual store fee for another project)  
-If you would like to help the project, feel free to PR any required changes for iOS support and/or publish it to the AppStore!  
+Coming very soon!
 
 Google Play and the Google Play logo are trademarks of Google LLC.
