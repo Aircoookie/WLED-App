@@ -9,9 +9,7 @@ using System.Linq;
  * (c) 2019 Christian Schwinne
  * Licensed under the MIT license
  * 
- * This project was build for and tested with Android and UWP.
- * iOS is not supported, but there is no platform-dependent code like custom renderers,
- * so only minor modifications should be required for proper functionality
+ * This project was build for and tested with Android, iOS and UWP.
  */
 
 [assembly: XamlCompilation(XamlCompilationOptions.Compile)]
