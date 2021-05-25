@@ -26,17 +26,17 @@
                 <ColumnDefinition Width="*"  />
                 <ColumnDefinition Width="65" />
             </Grid.ColumnDefinitions>
-            <Image x:Name="imageLeft" Source="icon_back.png" Style="StaticResource{MenuBarButtonStyle}" BackgroundColor="#333" Grid.Column="0">
+            <Image x:Name="imageLeft" Source="icon_back.png" Style="{StaticResource MenuBarButtonStyle}" BackgroundColor="#333" Grid.Column="0">
                 <Image.GestureRecognizers>
                     <TapGestureRecognizer Tapped="OnLeftButtonTapped" />
                 </Image.GestureRecognizers>
             </Image>
-            <Image Source="wled_logo.png" Style="StaticResource{MenuBarButtonStyle}" BackgroundColor="#333" Grid.Column="1">
+            <Image Source="wled_logo.png" Style="{StaticResource MenuBarButtonStyle}" BackgroundColor="#333" Grid.Column="1">
                 <Image.GestureRecognizers>
                     <TapGestureRecognizer Tapped="OnLogoTapped" />
                 </Image.GestureRecognizers>
             </Image>
-            <Image x:Name="imageRight" Style="StaticResource{MenuBarButtonStyle}" BackgroundColor="#333" Grid.Column="2">
+            <Image x:Name="imageRight" Style="{StaticResource MenuBarButtonStyle}" BackgroundColor="#333" Grid.Column="2">
                 <Image.GestureRecognizers>
                     <TapGestureRecognizer Tapped="OnRightButtonTapped" />
                 </Image.GestureRecognizers>

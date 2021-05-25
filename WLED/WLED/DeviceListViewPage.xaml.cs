@@ -115,7 +115,7 @@ namespace WLED
             if (deviceList.Remove(d)) InsertDeviceSorted(d);
         }
 
-        private void OnPowerButtonTapped(object sender, ItemTappedEventArgs e)
+        private void OnPowerButtonTapped(object sender, EventArgs e)
         {
             Button s = sender as Button;
             if (s.Parent.BindingContext is WLEDDevice targetDevice)
