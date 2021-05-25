@@ -23,7 +23,7 @@ namespace WLED
             DeviceModificationListView.ItemsSource = DeviceList;
         }
 
-        private void OnDeleteButtonTapped(object sender, ItemTappedEventArgs e)
+        private void OnDeleteButtonTapped(object sender, EventArgs e)
         {
             Button s = sender as Button;
             if (!(s.Parent.BindingContext is WLEDDevice targetDevice)) return;
