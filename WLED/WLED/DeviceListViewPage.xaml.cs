@@ -115,9 +115,9 @@ namespace WLED
             if (deviceList.Remove(d)) InsertDeviceSorted(d);
         }
 
-        private void OnPowerButtonTapped(object sender, ItemTappedEventArgs e)
+        private void OnPowerButtonTapped(object sender, EventArgs e)
         {
-            Button s = sender as Button;
+            ImageButton s = sender as ImageButton;
             if (s.Parent.BindingContext is WLEDDevice targetDevice)
             {
                 _ = targetDevice.SendAPICall("T=2"); //Toggle On/Off API call

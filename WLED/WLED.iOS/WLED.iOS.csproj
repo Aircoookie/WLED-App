@@ -315,9 +315,9 @@
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="Xamarin.Essentials">
-      <Version>1.0.0</Version>
+      <Version>1.7.3</Version>
     </PackageReference>
-    <PackageReference Include="Xamarin.Forms" Version="3.4.0.1009999" />
+    <PackageReference Include="Xamarin.Forms" Version="5.0.0.2545" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Xamarin\iOS\Xamarin.iOS.CSharp.targets" />
   <ItemGroup>
@@ -330,14 +330,13 @@
     <ITunesArtwork Include="iTunesArtwork" />
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="Assets.xcassets\wled_logo.imageset\" />
-    <Folder Include="Assets.xcassets\wled_logo.imageset\" />
     <Folder Include="Assets.xcassets\icon_add.imageset\" />
     <Folder Include="Assets.xcassets\icon_back.imageset\" />
     <Folder Include="Assets.xcassets\icon_bin.imageset\" />
     <Folder Include="Assets.xcassets\icon_check.imageset\" />
     <Folder Include="Assets.xcassets\icon_delete.imageset\" />
-    <Folder Include="Assets.xcassets\icon_power.imageset\" />
     <Folder Include="Assets.xcassets\icon_modify.imageset\" />
+    <Folder Include="Assets.xcassets\icon_power.imageset\" />
+    <Folder Include="Assets.xcassets\wled_logo.imageset\" />
   </ItemGroup>
 </Project>

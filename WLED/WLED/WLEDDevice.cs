@@ -186,6 +186,7 @@ namespace WLED
             OnPropertyChanged("ColorCurrent");
 
             StateCurrent = deviceResponse.IsOn;
+            OnPropertyChanged("StateColor");
             return true;
         }
 

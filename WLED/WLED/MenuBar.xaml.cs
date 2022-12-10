@@ -44,12 +44,12 @@ namespace WLED
             }
         }
 
-        void OnLogoTapped(object sender, ItemTappedEventArgs e)
+        void OnLogoTapped(object sender, EventArgs e)
         {
             Device.OpenUri(new Uri("https://github.com/Aircoookie/WLED"));
         }
 
-        protected virtual void OnLeftButtonTapped(object sender, ItemTappedEventArgs e)
+        protected virtual void OnLeftButtonTapped(object sender, EventArgs e)
         {
             EventHandler handler = LeftButtonTapped;
             if (handler != null)
@@ -62,7 +62,7 @@ namespace WLED
             }
         }
 
-        protected virtual void OnRightButtonTapped(object sender, ItemTappedEventArgs e)
+        protected virtual void OnRightButtonTapped(object sender, EventArgs e)
         {
             RightButtonTapped?.Invoke(this, e);
         }
