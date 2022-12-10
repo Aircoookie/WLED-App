@@ -25,7 +25,7 @@ namespace WLED
 
         private void OnDeleteButtonTapped(object sender, EventArgs e)
         {
-            Button s = sender as Button;
+            ImageButton s = sender as ImageButton;
             if (!(s.Parent.BindingContext is WLEDDevice targetDevice)) return;
 
             DeviceList.Remove(targetDevice);

@@ -41,11 +41,9 @@
                             <Label Text="{Binding Status}" 
                                    Font="18" TextColor="{Binding TextColor}"
                                    Grid.Row="1" Grid.Column="0" />
-                            <Button Clicked="OnDeleteButtonTapped" BackgroundColor="#D9321F"
-                                    CornerRadius="34" BorderColor="White" BorderWidth="4"
+                            <ImageButton Source="icon_delete.png" Clicked="OnDeleteButtonTapped" BackgroundColor="#D9321F"
+                                    CornerRadius="34" BorderColor="White" BorderWidth="2"
                                     Grid.Row="0" Grid.Column="1" Grid.RowSpan="2" />
-
-                            <Image Source="icon_delete.png" Scale ="0.8" Grid.Row="0" Grid.Column="1" Grid.RowSpan="2" InputTransparent="True" BackgroundColor="Transparent"/>
                         </Grid>
                     </ViewCell>
                 </DataTemplate>
