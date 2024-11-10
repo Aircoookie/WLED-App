@@ -1,9 +1,15 @@
 <a href='https://play.google.com/store/apps/details?id=com.aircoookie.WLED&pcampaignid=MKT-Other-global-all-co-prtnr-py-PartBadge-Mar2515-1'><img alt='Get it on Google Play' src='https://play.google.com/intl/en_us/badges/images/generic/en_badge_web_generic.png' height="80" align="middle"/></a>
 <a href='https://apps.apple.com/us/app/wled/id1475695033'><img alt='Download on the App Store' src='https://raw.githubusercontent.com/Aircoookie/WLED-App/master/StoreImages/appstore_badge.svg?sanitize=true' height="55" align="middle"/></a>
 
+> [!WARNING]
+> This app is no longer maintained. It is still available for legacy reason but it does not receive new updates and future bugs may not be fixed. Look for alternative community apps, like:  
+> **WLED Native**, made by community member [Moustachauve](https://github.com/Moustachauve)
+>    - For [Android](https://play.google.com/store/apps/details?id=ca.cgagnier.wlednativeandroid) - [[Source Code](https://github.com/Moustachauve/WLED-Native-Android)]
+>    - For [iOS](https://apps.apple.com/us/app/wled-native/id6446207239) - [[Source Code](https://github.com/Moustachauve/WLED-Native-iOS/)]
+
 ## Welcome to the WLED app! (v1.0.3)
 
-A brand new app for Android, iPhone, iPad and UWP devices for discovering and controlling your [WLED](https://github.com/Aircoookie/WLED) devices easily!
+An app for Android, iPhone, iPad and UWP devices for discovering and controlling your [WLED](https://github.com/Aircoookie/WLED) devices easily!
 
 ### Features:
 - Automatic device detection (mDNS)
